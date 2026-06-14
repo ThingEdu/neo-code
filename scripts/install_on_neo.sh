@@ -6,11 +6,12 @@
 #
 # Usage:
 #   Local:  bash scripts/install_on_neo.sh
-#   Remote: curl -sSL https://raw.githubusercontent.com/MEO-3/neo-code/main/scripts/install_on_neo.sh | bash
+#   Remote: curl -sSL https://raw.githubusercontent.com/ThingEdu/neo-code/main/scripts/install_on_neo.sh | bash
 #
 # Options:
-#   --no-desktop   Skip .desktop file and icon installation
-#   --uninstall    Remove NEO Code installation
+#   --no-desktop       Skip .desktop file and icon installation
+#   --uninstall        Remove NEO Code installation
+#   --version=X.Y.Z    Install a specific version from PyPI (default: latest)
 # ==============================================================================
 set -euo pipefail
 
@@ -23,6 +24,8 @@ ICON_DIR="$HOME/.local/share/icons/hicolor/128x128/apps"
 ICON_FILE="$ICON_DIR/neo-code.png"
 PYPI_PACKAGE="neo-code"
 GITHUB_REPO="https://github.com/ThingEdu/neo-code.git"
+INSTALL_VERSION=""   # set via --version=X.Y.Z; empty = latest from PyPI
+RAW_INSTALL_URL="https://raw.githubusercontent.com/ThingEdu/neo-code/main/scripts/install_on_neo.sh"
 
 # -- Parse arguments -----------------------------------------------------------
 SKIP_DESKTOP=false
@@ -32,9 +35,16 @@ for arg in "$@"; do
     case "$arg" in
         --no-desktop) SKIP_DESKTOP=true ;;
         --uninstall)  UNINSTALL=true ;;
+        --version=*)  INSTALL_VERSION="${arg#*=}" ;;
         *)            echo "Unknown option: $arg"; exit 1 ;;
     esac
 done
+
+if [ -n "$INSTALL_VERSION" ]; then
+    PYPI_SPEC="${PYPI_PACKAGE}==${INSTALL_VERSION}"
+else
+    PYPI_SPEC="${PYPI_PACKAGE}"
+fi
 
 # -- Helpers -------------------------------------------------------------------
 info()  { echo -e "\033[1;32m[INFO]\033[0m  $*"; }
@@ -67,18 +77,30 @@ pip_install() {
     python3 -m pip install $bsp "$@"
 }
 
-# -- Uninstall -----------------------------------------------------------------
-do_uninstall() {
-    info "Uninstalling $DISPLAY_NAME..."
-
-    # Remove pip-installed package
+pip_uninstall() {
     local bsp=""
     if python3 -m pip install --help 2>&1 | grep -q "break-system-packages"; then
         bsp="--break-system-packages"
     fi
-    python3 -m pip uninstall -y $bsp "$PYPI_PACKAGE" 2>/dev/null || true
+    python3 -m pip uninstall -y $bsp "$@" 2>/dev/null || true
+}
 
-    if [ -L "$BIN_LINK" ]; then
+python_has_pyqt5() {
+    python3 - <<'PY' 2>/dev/null
+from PyQt5.QtCore import QT_VERSION_STR
+from PyQt5.QtGui import QGuiApplication
+from PyQt5.QtWidgets import QApplication
+print(QT_VERSION_STR)
+PY
+}
+
+# -- Uninstall -----------------------------------------------------------------
+do_uninstall() {
+    info "Uninstalling $DISPLAY_NAME..."
+
+    pip_uninstall "$PYPI_PACKAGE"
+
+    if [ -L "$BIN_LINK" ] || [ -f "$BIN_LINK" ]; then
         rm -f "$BIN_LINK"
         info "Removed symlink: $BIN_LINK"
     fi
@@ -143,23 +165,23 @@ info "Installing $DISPLAY_NAME..."
 if [ "$ARCH" = "arm" ]; then
     # ARM: avoid rebuilding PyQt5 from source — use system apt package
     info "ARM detected — installing without PyQt5 dependency (using system PyQt5)..."
-    if ! pip_install --no-deps --quiet "$PYPI_PACKAGE" 2>&1; then
+    if ! pip_install --no-deps --quiet "$PYPI_SPEC" 2>&1; then
         info "PyPI install failed. Installing from GitHub source..."
         require_cmd git
         pip_install --no-deps "git+${GITHUB_REPO}"
     fi
     # Install non-Qt dependencies separately
     info "Installing Python dependencies (excluding PyQt5)..."
-    pip_install --quiet "jedi>=0.19.0" "pyflakes>=3.2.0" "thingbot-telemetrix"
+    pip_install --quiet "Jedi>=0.19.0" "pyflakes>=3.2.0" "thingbot-telemetrix==1.0"
     # Ensure PyQt5 is available (system packages or pip fallback)
-    if ! python3 -c "import PyQt5" 2>/dev/null; then
+    if ! python_has_pyqt5 >/dev/null; then
         info "Installing PyQt5 via pip (this may take a while on ARM)..."
         pip_install "PyQt5>=5.15"
     fi
 else
     # x86: PyQt5 wheels available, normal install
-    if pip_install --quiet "$PYPI_PACKAGE" 2>&1; then
-        info "Installed from PyPI."
+    if pip_install --quiet "$PYPI_SPEC" 2>&1; then
+        info "Installed ${PYPI_SPEC} from PyPI."
     else
         info "PyPI install failed. Installing from GitHub source..."
         require_cmd git
@@ -251,7 +273,7 @@ ensure_path() {
         warn "$bin_dir is not in your PATH."
 
         local shell_rc=""
-        case "$(basename "$SHELL")" in
+        case "$(basename "${SHELL:-sh}")" in
             zsh)  shell_rc="$HOME/.zshrc" ;;
             bash) shell_rc="$HOME/.bashrc" ;;
             *)    shell_rc="$HOME/.profile" ;;
@@ -275,5 +297,5 @@ info "=========================================="
 echo ""
 echo "  Run:  neo-code"
 echo ""
-echo "  Uninstall:  curl -sSL https://raw.githubusercontent.com/MEO-3/neo-code/main/scripts/install_on_neo.sh | bash -s -- --uninstall"
+echo "  Uninstall:  curl -sSL $RAW_INSTALL_URL | bash -s -- --uninstall"
 echo ""
