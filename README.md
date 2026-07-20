@@ -1,40 +1,127 @@
 # NEO Code
 
-## Tính năng
+**A kid-friendly Python IDE for STEM & Robotics learners (ages 6–12).**
 
-- 🟢 **Trình soạn thảo Python** — tô màu cú pháp, hiển thị số dòng, phát sự kiện khi mã thay đổi (debounce)
-- ▶️ **Chạy & Dừng** — chạy mã bằng `QProcess` trong sandbox với giới hạn 30 giây (F5 / F6)
-- ⚡ **Chế độ REPL** — console Python tương tác trực tiếp bằng tiến trình `python3 -i` luôn hoạt động (F9)
-- 📤 **Bảng đầu ra** — console có thể thu gọn, hiển thị stdout/stderr có màu
-- 📖 **Thanh bài học** — thanh hoạt động kiểu VS Code để duyệt chương trình học
-- 🎨 **Chủ đề xanh** — nền trắng + bảng màu xanh #32A852, dễ nhìn với học sinh nhỏ
+NEO Code is a lightweight educational Python IDE built for the
+[NEO One](https://github.com/ThingEdu) education device (ARM64 / Armbian, 2 GB
+RAM) and standard Linux desktops. It pairs a clean code editor with guided,
+auto-graded lessons and a live REPL — everything runs locally, no internet
+required.
+
+> **App language:** the user interface is in **Vietnamese**, matching its
+> audience of Vietnamese primary-school students. This README (project docs) is
+> in English.
+
+## Requirements
+
+- **Python 3.10+**
+- **Linux** (x86-64 or ARM64 / Armbian) with a running display server (X11 or Wayland)
+- **Qt 6.4+** and its QML runtime — installed from apt by the `.deb` package (never built from pip on ARM)
 
 ---
 
-## Cài đặt trên Neo (Neo One)
+## Installation
 
-1. Mở Terminal.
-2. Chạy lệnh cài đặt:
+### NEO One / Debian / Ubuntu (recommended)
+
+The `.deb` is `Architecture: all`; apt pulls the correct PyQt6 and Qt6 QML
+binaries for your architecture at install time.
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/MEO-3/neo-code/main/scripts/install_on_neo.sh | bash
+curl -sSL https://raw.githubusercontent.com/ThingEdu/neo-code/main/scripts/install_on_neo.sh | bash
+```
+
+Options:
+
+| Flag | Effect |
+| --- | --- |
+| `--version=X.Y.Z` | Install a specific release (default: latest) |
+| `--uninstall` | Remove NEO Code (and clean up legacy pip installs) |
+
+### Manual `.deb` install
+
+Download the latest `neo-code_<version>_all.deb` from the
+[releases page](https://github.com/ThingEdu/neo-code/releases), then:
+
+```bash
+sudo apt-get install ./neo-code_<version>_all.deb
 ```
 
 ---
 
-## Cách mở ứng dụng trên NEO One
+## Running the app
 
-- Trên góc trái trên cùng màn hình, trong phần Application, mục Education, chọn NEO Code.
-- Từ terminal: chạy lệnh `neo-code`.
-- Từ giao diện desktop: mở biểu tượng/launcher được tạo bởi trình cài đặt.
+- **Desktop menu:** *Applications → Education → NEO Code*
+- **Terminal:** `neo-code`
+
+Once open:
+
+| Feature | How to use |
+| --- | --- |
+| Editor | Type Python in the editor; syntax and line numbers update automatically |
+| Run / Stop | `F5` runs (30-second limit), `F6` stops |
+| REPL | `F9` toggles the interactive console |
+| Output | Expand the console panel to read stdout / stderr |
+| Lessons | Open the lesson sidebar to pick a lesson; run to get graded feedback |
+| Robot | Open the robot panel to connect a ThingBot board |
+
+### Keyboard shortcuts
+
+| Action | Shortcut |
+| --- | --- |
+| Run code | `F5` |
+| Stop execution | `F6` |
+| Toggle REPL | `F9` |
+| New file | `Ctrl+N` |
+| Open file | `Ctrl+O` |
+| Save file | `Ctrl+S` |
 
 ---
 
-## Cách sử dụng theo từng tính năng
+## Development
 
-- **Trình soạn thảo Python**: nhập mã trong vùng soạn thảo; cú pháp được tô màu và số dòng hiển thị tự động.
-- **Chạy & Dừng**: nhấn F5 để chạy, nhấn F6 để dừng; mỗi lần chạy bị giới hạn 30 giây.
-- **Chế độ REPL**: nhấn F9 để bật/tắt REPL; gõ lệnh Python và xem kết quả ngay.
-- **Bảng đầu ra**: mở bảng console để xem stdout/stderr; có thể thu gọn khi không cần theo dõi.
-- **Thanh bài học**: mở thanh hoạt động bên cạnh để chọn bài học và duyệt nội dung chương trình.
-- **Chủ đề xanh**: giao diện được tối ưu cho học sinh nhỏ, không cần cấu hình thêm.
+```bash
+git clone https://github.com/ThingEdu/neo-code.git
+cd neo-code
+
+# PyQt6 comes from apt on ARM — --system-site-packages lets the venv see it.
+python3 -m venv --system-site-packages .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+# Run from source
+python -m neo_code        # or: neo-code
+make run
+
+# Build the .deb (in a Debian bookworm container; needs docker/podman)
+make deb
+```
+
+The project is layered and event-driven — components communicate only through
+the `event_bus` singleton. See [`AGENTS.md`](AGENTS.md) for the architecture and
+contributor guide, and [`docs/specs/`](docs/specs/) for design notes.
+
+There is **no test suite or linter config wired up yet** — please don't claim
+tests pass.
+
+---
+
+## Releasing
+
+`pyproject.toml`'s `version` is the single source of truth. To cut a release:
+
+```bash
+# 1. Bump `version` in pyproject.toml
+# 2. Build the package
+make deb                                    # → dist/neo-code_X.Y.Z_all.deb
+# 3. Attach it to a GitHub release
+gh release create vX.Y.Z dist/*.deb
+```
+
+`install_on_neo.sh` downloads that asset by tag.
+
+---
+
+## License
+
+[MIT](LICENSE)

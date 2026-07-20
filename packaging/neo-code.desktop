@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=NEO Code
+GenericName=Educational Python IDE
+Comment=Python IDE for STEM and Robotics students
+Exec=neo-code
+Icon=neo-code
+Terminal=false
+Categories=Education;Development;IDE;
+Keywords=python;ide;code;kids;stem;robotics;
+StartupNotify=true

@@ -1,0 +1,38 @@
+Source: neo-code
+Section: education
+Priority: optional
+Maintainer: Maker Việt <everwellmax@gmail.com>
+Build-Depends: debhelper-compat (= 13),
+ dh-python,
+ python3-all,
+ python3-setuptools,
+ pybuild-plugin-pyproject
+Standards-Version: 4.6.2
+Homepage: https://github.com/ThingEdu/neo-code
+Rules-Requires-Root: no
+
+Package: neo-code
+Architecture: all
+Depends: ${misc:Depends},
+ ${python3:Depends},
+ python3-pyqt6,
+ python3-pyqt6.qtquick,
+ python3-pyqt6.qtqml,
+ qt6-qpa-plugins,
+ qml6-module-qtquick,
+ qml6-module-qtquick-controls,
+ qml6-module-qtquick-layouts,
+ qml6-module-qtquick-window,
+ qml6-module-qtquick-templates,
+ qml6-module-qtquick-dialogs,
+ qml6-module-qtqml-workerscript
+Recommends: qt6-wayland
+Description: Educational Python IDE for kids (NEO One / STEM & Robotics)
+ NEO Code is an open-source Python IDE designed for STEM and Robotics
+ students aged 6-12, built for the NEO One education device
+ (ARM64/Armbian) and standard Linux desktops.
+ .
+ Kids write and run Python with a child-friendly editor, guided lessons
+ with automatic grading, a REPL, and a robot workspace. The UI is a
+ PyQt6 + QML front end; PyQt6 and the Qt6 QML runtime (QtQuick,
+ QtQuick.Controls) are pulled from apt, never built via pip.

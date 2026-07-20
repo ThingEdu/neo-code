@@ -1,53 +1,60 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
 name = "neo-code"
-version = "0.4.0"
-description = "Educational Python IDE for STEM & Robotics students"
+version = "0.5.0"
+description = "Educational Python IDE for STEM & Robotics students on NEO One device"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [
-    { name = "NEO Code Team" },
-]
-keywords = ["ide", "education", "python", "stem", "robotics", "kids"]
+authors = [{ name = "ThingEdu" }]
+keywords = ["ide", "education", "python", "stem", "robotics", "kids", "qt6"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Education",
     "Topic :: Education",
-    "Topic :: Text Editors :: Integrated Development Environments (IDE)",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
+    "License :: MIT License",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Operating System :: POSIX :: Linux",
     "Environment :: X11 Applications :: Qt",
 ]
-dependencies = [
-    "PyQt5==5.15.9",
-    "Jedi>=0.19.0",
-    "pyflakes>=3.2.0",
-    "thingbot-telemetrix==1.0"
-]
+# Floor matches Debian 12 (bookworm) apt — the NEO One deployment target
+# (see debian/control and scripts/install_on_neo.sh). Qt6 comes from apt, never pip.
+dependencies = ["PyQt6>=6.4,<7"]
 
 [project.urls]
-Homepage = "https://github.com/MEO-3/neo-code"
-Repository = "https://github.com/MEO-3//neo-code"
-"Bug Tracker" = "https://github.com/MEO-3/neo-code/issues"
+Homepage = "https://github.com/ThingEdu/neo-code"
+Repository = "https://github.com/ThingEdu/neo-code"
+"Bug Tracker" = "https://github.com/ThingEdu/neo-code/issues"
 
 [project.scripts]
 neo-code = "neo_code.__main__:main"
 
 [project.optional-dependencies]
-dev = [
-    "hatch",
-    "twine",
-]
-robot = [
-    "thingbot-telemetrix",
+dev = ["ruff", "mypy"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+neo_code = [
+    "ui/qml/**/*.qml",
+    "ui/qml/**/qmldir",
+    "features/**/data/*.json",
+    "resources/**/*",
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["neo_code"]
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true

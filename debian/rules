@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+export PYBUILD_NAME = neo_code
+export PYBUILD_DESTDIR = debian/neo-code
+# No test suite ships in the package build; run tooling via `make lint`, not here.
+export PYBUILD_DISABLE = test
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+# NOTE: no app icon ships yet — packaging/neo-code.png does not exist. The
+# .desktop file references the themed name "neo-code" (degrades to a generic
+# icon). Drop a pixmap here + install it once branding art exists.
