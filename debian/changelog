@@ -1,3 +1,14 @@
+neo-code (0.6.0) unstable; urgency=medium
+
+  * App icon: chevron mark on a ThingEdu-green tile, installed into the hicolor
+    theme (16-512 + scalable) so the .desktop entry resolves an icon at last.
+  * AppButton: icon-only buttons size square, utility variant adapts to light
+    or dark hosts, checkable toggles, tooltips, M3 pressed/focus states.
+  * Học mode: 4 new curriculum topics with 12 lessons.
+  * Console output wraps; scrollback capped at 1000 lines.
+
+ -- Maker Việt <everwellmax@gmail.com>  Tue, 21 Jul 2026 17:30:00 +0700
+
 neo-code (0.5.0) unstable; urgency=medium
 
   * PyQt6 + QML UI (editor, run/stop, REPL, lessons with grading, robot,
