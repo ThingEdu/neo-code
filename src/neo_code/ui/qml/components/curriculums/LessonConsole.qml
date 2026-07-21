@@ -61,14 +61,20 @@ SplitView {
                 Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.terminal_border }
             }
             ScrollView {
+                id: expectedScroll
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 clip: true
+                // Pin the content to the viewport width so there is no
+                // horizontal scrolling for wrapping to fight with. Sizing off
+                // `parent` here would be circular — the ScrollView derives its
+                // contentWidth from this Text.
+                contentWidth: availableWidth
                 Text {
-                    width: parent.width - 2 * Theme.space_base
+                    width: expectedScroll.availableWidth - 2 * Theme.space_base
                     x: Theme.space_base; topPadding: Theme.space_sm; bottomPadding: Theme.space_sm
                     text: root.expectedText
-                    wrapMode: Text.NoWrap
+                    wrapMode: Text.Wrap
                     font.family: Theme.mono_family
                     font.pixelSize: settings.fontSize
                     color: Theme.terminal_text
@@ -88,18 +94,8 @@ SplitView {
         border.color: root.stateColor(root.state)
         clip: true
 
-        property int maxLines: 2000
-        function append(text, kind) {
-            var parts = String(text).split("\n")
-            for (var i = 0; i < parts.length; ++i) {
-                if (parts[i].length === 0 && i === parts.length - 1) continue
-                lines.append({ "line": parts[i], "kind": kind })
-            }
-            while (lines.count > maxLines) lines.remove(0)
-            resultView.positionViewAtEnd()
-        }
-        function clear() { lines.clear() }
-        ListModel { id: lines }
+        function append(text, kind) { out.append(text, kind) }
+        function clear() { out.clear() }
 
         ColumnLayout {
             anchors.fill: parent
@@ -116,46 +112,47 @@ SplitView {
                     anchors.fill: parent
                     anchors.leftMargin: Theme.space_base
                     anchors.rightMargin: Theme.space_sm
+                    spacing: Theme.space_xs
                     Icon {
                         name: "code_tags"; size: 15; color: root.stateColor(root.state)
                         ToolTip.text: "Kết quả của bạn"; ToolTip.visible: hoverHandler2.hovered; ToolTip.delay: 500
                         HoverHandler { id: hoverHandler2 }
                     }
+                    Item { Layout.fillWidth: true }
+                    Button {
+                        id: clearResultBtn
+                        implicitWidth: 30; implicitHeight: 30
+                        ToolTip.text: "Xoá kết quả"; ToolTip.visible: hovered; ToolTip.delay: 500
+                        onClicked: resultConsole.clear()
+                        contentItem: Icon { name: "broom"; size: 15; color: Theme.terminal_text_secondary
+                                            anchors.centerIn: parent }
+                        background: Rectangle { radius: Theme.radius_chip
+                            color: clearResultBtn.hovered ? Theme.terminal_border : "transparent" }
+                    }
                 }
                 Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.terminal_border }
             }
-            ListView {
-                id: resultView
+            ConsoleView {
+                id: out
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                clip: true
-                model: lines
-                boundsBehavior: Flickable.StopAtBounds
-                ScrollBar.vertical: ScrollBar {}
-                leftMargin: Theme.space_base
-                topMargin: Theme.space_sm
-                bottomMargin: Theme.space_sm
-                delegate: Text {
-                    required property string line
-                    required property string kind
-                    width: resultView.width - 2 * Theme.space_base
-                    wrapMode: Text.NoWrap
-                    font.family: Theme.mono_family
-                    font.pixelSize: settings.fontSize
-                    text: line
-                    color: kind === "err" ? Theme.terminal_error
-                           : kind === "info" ? Theme.terminal_text_secondary
-                           : Theme.terminal_text
-                }
+                maxLines: 1000
+                showInput: true
+                inputEnabled: execution.running
+                bottomRadius: resultConsole.radius
+                placeholderText: execution.running ? "Nhập câu trả lời rồi nhấn Enter…"
+                                                   : "Chạy chương trình để nhập"
+                onSubmitted: function(text) { execution.sendInput(text) }
             }
         }
     }
 
     Connections {
         target: signalBus
-        function onExecutionStarted() { resultConsole.clear(); root.state = "running" }
-        function onStdoutReceived(line) { resultConsole.append(line, "out") }
-        function onStderrReceived(line) { resultConsole.append(line, "err") }
+        function onExecutionStarted() { out.clear(); root.state = "running" }
+        function onStdoutReceived(line) { out.append(line, "out") }
+        function onStdoutPartial(text) { out.appendPartial(text); out.focusInput() }
+        function onStderrReceived(line) { out.append(line, "err") }
         function onExecutionFinished(code) { root.state = code === 0 ? "success" : "fail" }
     }
 }

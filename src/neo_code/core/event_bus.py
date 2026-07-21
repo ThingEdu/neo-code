@@ -29,10 +29,15 @@ class EventBus(QObject):
     execution_stop_requested = pyqtSignal()
     execution_started = pyqtSignal()
     execution_finished = pyqtSignal(int)        # (exit_code,)
+    execution_input_submitted = pyqtSignal(str)  # (line,) — typed answer for input()
     repl_mode_changed = pyqtSignal(bool)        # True = REPL active, False = script mode
 
     # ── Subprocess output ──────────────────────────────────────────────────
-    stdout_received = pyqtSignal(str)           # (text,)
+    stdout_received = pyqtSignal(str)           # (text,) — one complete line
+    # The current line has no newline yet — typically an input() prompt. Carries
+    # the whole unterminated line each time, so consumers replace rather than
+    # append.
+    stdout_partial = pyqtSignal(str)            # (text,)
     stderr_received = pyqtSignal(str)           # (text,)
 
 

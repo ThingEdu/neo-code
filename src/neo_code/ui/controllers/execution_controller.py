@@ -40,6 +40,12 @@ class ExecutionController(QObject):
     def stop(self) -> None:
         event_bus.execution_stop_requested.emit()
 
+    @pyqtSlot(str)
+    def sendInput(self, text: str) -> None:
+        """Answer a running program's input() prompt."""
+        if self._running:
+            event_bus.execution_input_submitted.emit(text)
+
     @pyqtSlot(bool)
     def setReplMode(self, active: bool) -> None:
         event_bus.repl_mode_changed.emit(active)

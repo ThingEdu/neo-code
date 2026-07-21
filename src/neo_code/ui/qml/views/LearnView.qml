@@ -58,4 +58,12 @@ Item {
         target: lessonsController
         function onLessonOpened(starter) { editor.text = starter }
     }
+
+    // Editor content also follows the file lifecycle, same as Sáng tạo, so
+    // New/Open/Save in the toolbar work here too.
+    Connections {
+        target: signalBus
+        function onFileOpened(path, content) { editor.text = content }
+        function onFileNew() { editor.text = "" }
+    }
 }

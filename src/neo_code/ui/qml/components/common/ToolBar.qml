@@ -60,20 +60,20 @@ Rectangle {
             onClicked: bar.backRequested()
         }
 
-        Rectangle { visible: !bar.homeMode && !bar.learnMode; Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.terminal_border }
+        Rectangle { visible: !bar.homeMode; Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.terminal_border }
 
         AppButton {
-            visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "file_plus"
+            visible: !bar.homeMode; variant: "utility"; iconName: "file_plus"
             tooltip: "Mới"
             onClicked: bar.newRequested()
         }
         AppButton {
-            visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "folder_open"
+            visible: !bar.homeMode; variant: "utility"; iconName: "folder_open"
             tooltip: "Mở"
             onClicked: bar.openRequested()
         }
         AppButton {
-            visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "save"
+            visible: !bar.homeMode; variant: "utility"; iconName: "save"
             tooltip: "Lưu"
             onClicked: bar.saveRequested()
         }

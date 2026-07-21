@@ -20,6 +20,7 @@ class SignalBusBridge(QObject):
 
     # ── Subprocess output ──────────────────────────────────────────────────
     stdoutReceived = pyqtSignal(str)
+    stdoutPartial = pyqtSignal(str)              # unterminated line (input() prompt)
     stderrReceived = pyqtSignal(str)
 
     # ── File lifecycle ─────────────────────────────────────────────────────
@@ -33,6 +34,7 @@ class SignalBusBridge(QObject):
         event_bus.execution_finished.connect(self.executionFinished)
         event_bus.repl_mode_changed.connect(self.replModeChanged)
         event_bus.stdout_received.connect(self.stdoutReceived)
+        event_bus.stdout_partial.connect(self.stdoutPartial)
         event_bus.stderr_received.connect(self.stderrReceived)
         event_bus.file_new.connect(self.fileNew)
         event_bus.file_opened.connect(self.fileOpened)

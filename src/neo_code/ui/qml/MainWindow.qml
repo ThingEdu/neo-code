@@ -37,7 +37,7 @@ ApplicationWindow {
         fileMode: FileDialog.SaveFile
         nameFilters: ["Tệp Python (*.py)", "Tất cả tệp (*)"]
         currentFolder: files.lastOpenFolder
-        onAccepted: files.saveAs(selectedFile, createView.currentText)
+        onAccepted: files.saveAs(selectedFile, root.learnActive ? learnView.currentText : createView.currentText)
     }
 
     Common.SettingsDialog {
@@ -63,7 +63,7 @@ ApplicationWindow {
             onBackRequested: root.mode = "home"
             onNewRequested: files.newFile()
             onOpenRequested: openDialog.open()
-            onSaveRequested: files.hasFile ? files.save(createView.currentText) : saveDialog.open()
+            onSaveRequested: files.hasFile ? files.save(root.learnActive ? learnView.currentText : createView.currentText) : saveDialog.open()
             onRunRequested: execution.run(root.learnActive ? learnView.currentText : createView.currentText)
             onStopRequested: execution.stop()
             onReplToggled: function(active) { root.replActive = active; execution.setReplMode(active) }
