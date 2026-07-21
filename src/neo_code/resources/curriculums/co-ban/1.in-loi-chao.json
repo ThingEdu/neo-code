@@ -10,7 +10,11 @@
         "Kết quả đầy đủ là: print(\"Xin chao\")"
     ],
     "blocks": [
-        { "label": "print()", "insert": "print(\"$0\")", "kind": "builtin" }
+        {
+            "label": "print()",
+            "insert": "print(\"$0\")\n",
+            "kind": "builtin"
+        }
     ],
     "expected": "Xin chao\n"
 }

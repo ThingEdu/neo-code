@@ -10,8 +10,16 @@
         "Kết quả đầy đủ là: print(2 + 3)"
     ],
     "blocks": [
-        { "label": "print()", "insert": "print($0)", "kind": "builtin" },
-        { "label": "2 + 3", "insert": "2 + 3", "kind": "number" }
+        {
+            "label": "print()",
+            "insert": "print($0)\n",
+            "kind": "builtin"
+        },
+        {
+            "label": "2 + 3",
+            "insert": "2 + 3\n",
+            "kind": "number"
+        }
     ],
     "expected": "5\n"
 }

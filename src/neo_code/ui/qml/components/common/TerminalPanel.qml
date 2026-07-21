@@ -12,7 +12,7 @@ Rectangle {
     border.color: Theme.terminal_border
     clip: true
 
-    property int maxLines: 2000
+    property int maxLines: 1000
 
     function append(text, kind) {
         var parts = String(text).split("\n")
@@ -82,7 +82,7 @@ Rectangle {
                 required property string line
                 required property string kind
                 width: view.width - 2 * Theme.space_base
-                wrapMode: Text.NoWrap
+                wrapMode: Text.Wrap
                 font.family: Theme.mono_family
                 font.pixelSize: settings.fontSize
                 text: line

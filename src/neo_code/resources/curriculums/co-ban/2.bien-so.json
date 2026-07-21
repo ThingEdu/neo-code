@@ -10,8 +10,16 @@
         "Kết quả đầy đủ:\nso_yeu_thich = 7\nprint(so_yeu_thich)"
     ],
     "blocks": [
-        { "label": "biến = giá trị", "insert": "so_yeu_thich = 7", "kind": "keyword" },
-        { "label": "print()", "insert": "print(so_yeu_thich)", "kind": "builtin" }
+        {
+            "label": "biến = giá trị",
+            "insert": "so_yeu_thich = 7",
+            "kind": "keyword"
+        },
+        {
+            "label": "print()",
+            "insert": "print(so_yeu_thich)\n",
+            "kind": "builtin"
+        }
     ],
     "expected": "7\n"
 }
