@@ -1,3 +1,13 @@
+neo-code (0.6.1) unstable; urgency=medium
+
+  * Console: prompts for and forwards typed answers to a running program's
+    input() calls, via a new shared ConsoleView used by both the terminal
+    and Học-mode result console.
+  * Học mode: toolbar now has New/Open/Save like Sáng tạo, and the result
+    console has a clear button.
+
+ -- Maker Việt <everwellmax@gmail.com>  Tue, 21 Jul 2026 17:41:00 +0700
+
 neo-code (0.6.0) unstable; urgency=medium
 
   * App icon: chevron mark on a ThingEdu-green tile, installed into the hicolor
