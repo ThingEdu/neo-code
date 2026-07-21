@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!--
+    NEO Code app icon — Neo Play / ThingEdu brand.
+
+    Rounded-square tile in ThingEdu Green (Theme.primary) carrying the chevron
+    mark from the in-app brand lockup (ToolBar.qml), drawn in Theme.primary_text
+    so the pair matches the design system's Primary / On-Primary roles.
+
+    Corner radius is 0.26 x size, the same ratio as the lockup tile. The mark is
+    paths rather than glyphs so the icon carries no font dependency. Round caps
+    extend each stroke by half its width (20px), so the 100px gap between the
+    chevrons renders as 60px — keep that clearance or they merge at 16px.
+
+    Master artwork: regenerate the launcher PNGs with scripts/render_icon.py.
+  -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0BE86E"/>
+      <stop offset="1" stop-color="#02C557"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="133" fill="url(#tile)"/>
+
+  <g fill="none" stroke="#05231A" stroke-width="40"
+     stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="206,152 120,256 206,360"/>
+    <polyline points="306,152 392,256 306,360"/>
+  </g>
+</svg>

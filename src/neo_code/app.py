@@ -9,12 +9,12 @@ from __future__ import annotations
 
 import sys
 
-from PyQt6.QtGui import QFont, QFontDatabase, QGuiApplication
+from PyQt6.QtGui import QFont, QFontDatabase, QGuiApplication, QIcon
 from PyQt6.QtQml import QQmlApplicationEngine
 from PyQt6.QtCore import QUrl
 
 from neo_code.theme.design import (
-    MDI, MDI_FONT_FAMILY, MDI_FONT_PATH,
+    APP_ICON_PATH, MDI, MDI_FONT_FAMILY, MDI_FONT_PATH,
     MONO_FONT_PATH, UI_FONT_FAMILY, UI_FONT_PATH,
     build_theme,
 )
@@ -35,6 +35,10 @@ class NeoCodeApp:
         self._app = QGuiApplication(argv)
         self._app.setApplicationName("NEO Code")
         self._app.setOrganizationName("ThingEdu")
+        # Matches the .desktop file's themed icon name, so Wayland compositors
+        # pair the window with the launcher entry.
+        self._app.setDesktopFileName("neo-code")
+        self._app.setWindowIcon(QIcon(str(APP_ICON_PATH)))
 
         QFontDatabase.addApplicationFont(str(MDI_FONT_PATH))
         QFontDatabase.addApplicationFont(str(UI_FONT_PATH))

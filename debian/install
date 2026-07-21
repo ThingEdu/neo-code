@@ -1,1 +1,10 @@
 packaging/neo-code.desktop usr/share/applications
+packaging/icons/hicolor/scalable/apps/neo-code.svg usr/share/icons/hicolor/scalable/apps
+packaging/icons/hicolor/16x16/apps/neo-code.png usr/share/icons/hicolor/16x16/apps
+packaging/icons/hicolor/24x24/apps/neo-code.png usr/share/icons/hicolor/24x24/apps
+packaging/icons/hicolor/32x32/apps/neo-code.png usr/share/icons/hicolor/32x32/apps
+packaging/icons/hicolor/48x48/apps/neo-code.png usr/share/icons/hicolor/48x48/apps
+packaging/icons/hicolor/64x64/apps/neo-code.png usr/share/icons/hicolor/64x64/apps
+packaging/icons/hicolor/128x128/apps/neo-code.png usr/share/icons/hicolor/128x128/apps
+packaging/icons/hicolor/256x256/apps/neo-code.png usr/share/icons/hicolor/256x256/apps
+packaging/icons/hicolor/512x512/apps/neo-code.png usr/share/icons/hicolor/512x512/apps

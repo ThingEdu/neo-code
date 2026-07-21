@@ -37,6 +37,11 @@ MONO_FONT_FAMILY = "JetBrains Mono"  # code editor / terminal / REPL
 UI_FONT_PATH = Path(__file__).parent.parent / "resources" / "fonts" / "Nunito.ttf"
 MONO_FONT_PATH = Path(__file__).parent.parent / "resources" / "fonts" / "JetBrainsMono.ttf"
 
+# App icon — master artwork is neo-code.svg alongside it; the PNG is what the
+# runtime loads (no Qt SVG image plugin needed). Regenerate both with
+# scripts/render_icon.py.
+APP_ICON_PATH = Path(__file__).parent.parent / "resources" / "icons" / "neo-code.png"
+
 TYPE = {
     "font_family": UI_FONT_FAMILY,
     "mono_family": MONO_FONT_FAMILY,
