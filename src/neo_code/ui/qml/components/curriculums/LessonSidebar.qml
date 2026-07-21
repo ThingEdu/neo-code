@@ -61,8 +61,8 @@ Rectangle {
             AppButton {
                 visible: !panel.collapsed && panel.view !== "topics"
                 variant: "utility"; iconName: "arrow_left"
-                implicitWidth: Theme.control_sm; implicitHeight: Theme.control_sm
-                leftPadding: Theme.space_xs; rightPadding: Theme.space_xs
+                implicitHeight: Theme.control_sm
+                iconSize: 15
                 onClicked: panel.backRequested()
             }
             Icon { name: "book_open"; size: 15; color: Theme.terminal_text_secondary; visible: !panel.collapsed }

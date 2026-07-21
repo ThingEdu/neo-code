@@ -56,26 +56,26 @@ Rectangle {
 
         AppButton {
             visible: !bar.homeMode; variant: "utility"; iconName: "arrow_left"
+            tooltip: "Quay lại"
             onClicked: bar.backRequested()
-            ToolTip.text: "Quay lại"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
 
         Rectangle { visible: !bar.homeMode && !bar.learnMode; Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.terminal_border }
 
         AppButton {
             visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "file_plus"
+            tooltip: "Mới"
             onClicked: bar.newRequested()
-            ToolTip.text: "Mới"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
         AppButton {
             visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "folder_open"
+            tooltip: "Mở"
             onClicked: bar.openRequested()
-            ToolTip.text: "Mở"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
         AppButton {
             visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "save"
+            tooltip: "Lưu"
             onClicked: bar.saveRequested()
-            ToolTip.text: "Lưu"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
 
         Rectangle { visible: !bar.homeMode; Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.terminal_border }
@@ -84,60 +84,34 @@ Rectangle {
             visible: !bar.homeMode
             variant: "primary"; iconName: "play"
             enabled: !bar.running
+            tooltip: "Chạy"
             onClicked: bar.runRequested()
-            ToolTip.text: "Chạy"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
         AppButton {
             visible: !bar.homeMode
             variant: "destructive"; iconName: "stop"
             enabled: bar.running
+            tooltip: "Dừng"
             onClicked: bar.stopRequested()
-            ToolTip.text: "Dừng"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
 
         Item { Layout.fillWidth: true }
 
-        // REPL toggle — secondary (blue) when active
-        Button {
-            id: replBtn
+        // REPL toggle — fills secondary (blue) while active
+        AppButton {
             visible: !bar.homeMode && !bar.learnMode
+            variant: "utility"; iconName: "console"
             checkable: true
             checked: bar.replActive
-            implicitHeight: Theme.control_base
-            leftPadding: Theme.space_base; rightPadding: Theme.space_base
+            tooltip: "Python REPL"
             onToggled: bar.replToggled(checked)
-            scale: down ? 0.97 : 1.0
-            Behavior on scale { NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
-            contentItem: Item {
-                implicitWidth: replRow.implicitWidth
-                implicitHeight: replRow.implicitHeight
-                RowLayout {
-                    id: replRow
-                    anchors.centerIn: parent
-                    spacing: Theme.space_xs
-                    Icon { name: "console"; size: Theme.icon_size
-                           color: replBtn.checked ? Theme.secondary_text : Theme.editor_text }
-                }
-            }
-            background: Rectangle {
-                radius: Theme.radius_chip
-                color: replBtn.checked ? Theme.secondary
-                       : replBtn.hovered ? Theme.terminal_border : Theme.editor_bg_alt
-            }
         }
 
         // Settings — icon only
-        Button {
-            id: cogBtn
-            implicitHeight: Theme.control_base; implicitWidth: Theme.control_base
+        AppButton {
+            variant: "utility"; iconName: "cog"
+            tooltip: "Cài đặt"
             onClicked: bar.settingsRequested()
-            scale: down ? 0.97 : 1.0
-            Behavior on scale { NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
-            contentItem: Icon { name: "cog"; size: 20; color: Theme.editor_text }
-            background: Rectangle {
-                radius: Theme.radius_chip
-                color: cogBtn.hovered ? Theme.editor_bg_alt : "transparent"
-            }
         }
     }
 }

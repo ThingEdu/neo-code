@@ -23,7 +23,8 @@ SPACING = {
 
 # ── Corner radius (inner = outer − padding) ────────────────────────────────
 RADIUS = {
-    "radius_chip": 10,    # buttons, chips, list rows
+    "radius_button": 8,   # buttons (M3 "Small"); icon-only buttons use radius_pill
+    "radius_chip": 10,    # chips, list rows
     "radius_card": 16,    # cards
     "radius_lg": 20,      # trays / large containers
     "radius_inner": 8,    # content block inside a 16px-padded card
@@ -41,6 +42,7 @@ TYPE = {
     "mono_family": MONO_FONT_FAMILY,
     "font_caption": 11,   # metadata, group labels
     "font_body": 13,      # body, list items
+    "font_label": 14,     # button labels (M3 "Label Large", Medium weight)
     "font_title": 15,     # card / section titles (semibold)
     "font_heading": 18,   # panel headings (bold)
 }
