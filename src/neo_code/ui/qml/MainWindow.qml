@@ -60,6 +60,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             running: execution.running
             replActive: root.replActive
+            onBackRequested: root.homeActive = true
             onNewRequested: files.newFile()
             onOpenRequested: openDialog.open()
             onSaveRequested: files.hasFile ? files.save(editor.text) : saveDialog.open()

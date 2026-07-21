@@ -61,6 +61,7 @@ MDI_FONT_PATH = Path(__file__).parent.parent / "resources" / "fonts" / "material
 # name → codepoint (from @mdi/font 7.4). Add here as new icons are used.
 _MDI_CODEPOINTS = {
     "book_open": 0xF14F7,        # book-open-variant  → home: "Học" mode
+    "arrow_left": 0xF004D,       # arrow-left         → back to home
     "play": 0xF040A,            # play               → run
     "stop": 0xF04DB,            # stop               → stop
     "console": 0xF07B7,          # console-line       → REPL

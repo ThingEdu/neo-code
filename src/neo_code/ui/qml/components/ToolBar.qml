@@ -12,6 +12,7 @@ Rectangle {
     property bool running: false
     property bool replActive: false
 
+    signal backRequested()
     signal newRequested()
     signal openRequested()
     signal saveRequested()
@@ -25,6 +26,10 @@ Rectangle {
         anchors.leftMargin: Theme.space_base
         anchors.rightMargin: Theme.space_base
         spacing: Theme.space_sm
+
+        AppButton { variant: "utility"; iconName: "arrow_left"; text: "Quay lại"; onClicked: bar.backRequested() }
+
+        Rectangle { Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.border }
 
         AppButton { variant: "utility"; iconName: "file_plus";   text: "Mới"; onClicked: bar.newRequested() }
         AppButton { variant: "utility"; iconName: "folder_open"; text: "Mở";  onClicked: bar.openRequested() }
