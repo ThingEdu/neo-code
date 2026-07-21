@@ -20,7 +20,7 @@ Button {
         "primary":     { "bg": Theme.primary,   "hover": Theme.primary_hover,   "fg": Theme.primary_text },
         "destructive": { "bg": Theme.error,     "hover": Theme.error_hover,     "fg": Theme.error_text },
         "secondary":   { "bg": Theme.secondary, "hover": Theme.secondary_hover, "fg": Theme.secondary_text },
-        "utility":     { "bg": "transparent",   "hover": Theme.surface_alt,     "fg": Theme.text }
+        "utility":     { "bg": "transparent",   "hover": Theme.editor_bg_alt,   "fg": Theme.editor_text }
     })[ctrl.variant]
 
     // Tactile press — GPU-cheap transform only.
@@ -52,7 +52,7 @@ Button {
 
     background: Rectangle {
         radius: Theme.radius_chip
-        color: !ctrl.enabled ? (ctrl.variant === "utility" ? "transparent" : Theme.surface_alt)
+        color: !ctrl.enabled ? (ctrl.variant === "utility" ? "transparent" : Theme.editor_bg_alt)
                : ctrl.hovered ? ctrl._spec.hover : ctrl._spec.bg
     }
 }

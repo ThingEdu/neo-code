@@ -10,7 +10,7 @@ _CONFIG_PATH = Path.home() / ".config" / "neo-code" / "settings.json"
 
 _DEFAULTS: dict = {
     "theme": "dark",
-    "font_size": 14,
+    "font_size": 18,
     "tab_width": 4,
     "last_open_dir": str(Path.home()),
 }

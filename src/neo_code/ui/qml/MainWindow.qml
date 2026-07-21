@@ -7,6 +7,7 @@ import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Dialogs
 import "components" as C
+import "views" as V
 
 ApplicationWindow {
     id: root
@@ -43,21 +44,17 @@ ApplicationWindow {
         anchors.centerIn: Overlay.overlay
     }
 
-    C.HomePanel {
-        anchors.fill: parent
-        visible: root.homeActive
-        onCreateRequested: root.homeActive = false
-        onSettingsRequested: settingsDialog.open()
-    }
-
     ColumnLayout {
         anchors.fill: parent
-        visible: !root.homeActive
         spacing: 0
 
-        // ── Toolbar ────────────────────────────────────────────────────────
+        // ── Toolbar — persistent across the home screen and the IDE.
+        // Rounded corners so it reads as a floating bar; the same margin is
+        // used everywhere (matches the editor↔console gap in IDE mode). ──
         C.ToolBar {
             Layout.fillWidth: true
+            Layout.margins: Theme.space_sm
+            homeMode: root.homeActive
             running: execution.running
             replActive: root.replActive
             onBackRequested: root.homeActive = true
@@ -70,63 +67,59 @@ ApplicationWindow {
             onSettingsRequested: settingsDialog.open()
         }
 
-        // ── File header (VS Code-style active file tab) ───────────────────
-        Rectangle {
+        V.HomePanel {
             Layout.fillWidth: true
-            Layout.preferredHeight: 36
-            visible: !root.replActive
-            color: Theme.surface_alt
-
-            Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.border }
-
-            Rectangle {
-                id: fileTab
-                height: parent.height
-                width: tabRow.implicitWidth + 2 * Theme.space_base
-                color: Theme.surface
-
-                Rectangle { anchors.top: parent.top; width: parent.width; height: 2; color: Theme.primary }
-
-                RowLayout {
-                    id: tabRow
-                    anchors.centerIn: parent
-                    spacing: Theme.space_xs
-                    C.Icon { name: "python"; size: 14; color: Theme.primary }
-                    Label {
-                        text: files.hasFile ? files.currentPath.split("/").pop() : "Chưa đặt tên"
-                        font.pixelSize: Theme.font_body
-                        color: Theme.text
-                    }
-                }
-            }
+            Layout.fillHeight: true
+            // No top margin — the toolbar's own bottom margin already
+            // supplies that gap (see the matching main-area Item below).
+            Layout.leftMargin: Theme.space_sm
+            Layout.rightMargin: Theme.space_sm
+            Layout.bottomMargin: Theme.space_sm
+            visible: root.homeActive
+            onCreateRequested: root.homeActive = false
         }
 
-        // ── Main area: editor/terminal split, or REPL full ────────────────
+        // ── Main area: editor (with its own file-tab header) beside the
+        // terminal, or REPL full — the file tab lives inside EditorPanel now,
+        // snapped to the editor it names instead of floating separately. ──
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            // No top margin — the toolbar's own bottom margin already supplies
+            // that gap; adding one here would double it (see IDE screenshot).
+            Layout.leftMargin: Theme.space_sm
+            Layout.rightMargin: Theme.space_sm
+            Layout.bottomMargin: Theme.space_sm
+            visible: !root.homeActive
 
-            // Editor over terminal (script mode)
+            // Editor beside terminal (script mode) — each pane floats as its
+            // own rounded card; the handle's gap is transparent so the two
+            // cards read as separate, not one panel with a divider.
             SplitView {
                 anchors.fill: parent
                 visible: !root.replActive
-                orientation: Qt.Vertical
+                orientation: Qt.Horizontal
 
-                C.EditorPanel {
+                handle: Item {
+                    implicitWidth: Theme.space_sm
+                    implicitHeight: Theme.space_sm
+                }
+
+                V.EditorPanel {
                     id: editor
-                    SplitView.fillHeight: true
-                    SplitView.minimumHeight: 200
+                    SplitView.fillWidth: true
+                    SplitView.minimumWidth: 300
                     text: "# NEO Code\nfor i in range(3):\n    print(\"Xin chào\", i)\n"
                 }
 
-                C.TerminalPanel {
-                    SplitView.preferredHeight: 180
-                    SplitView.minimumHeight: 80
+                V.TerminalPanel {
+                    SplitView.preferredWidth: 380
+                    SplitView.minimumWidth: 220
                 }
             }
 
             // REPL takes over the whole area (interactive mode)
-            C.ReplPanel {
+            V.ReplPanel {
                 anchors.fill: parent
                 visible: root.replActive
             }

@@ -3,10 +3,15 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import "../components"
 
 Rectangle {
     id: term
     color: Theme.terminal_bg
+    radius: Theme.radius_card
+    border.width: 1
+    border.color: Theme.terminal_border
+    clip: true
 
     property int maxLines: 2000
 
@@ -27,11 +32,20 @@ Rectangle {
         anchors.fill: parent
         spacing: 0
 
-        // Header
+        // Header — rounded top only (matches the panel's own top corners);
+        // square bottom so it sits flush against the output list below.
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 38
+            radius: Theme.radius_card
             color: Theme.terminal_bg_alt
+
+            Rectangle {
+                anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom
+                height: parent.radius
+                color: parent.color
+            }
+
             RowLayout {
                 anchors.fill: parent
                 anchors.leftMargin: Theme.space_base
@@ -71,7 +85,7 @@ Rectangle {
                 width: view.width - 2 * Theme.space_base
                 wrapMode: Text.NoWrap
                 font.family: Theme.mono_family
-                font.pixelSize: Theme.font_body
+                font.pixelSize: settings.fontSize
                 text: line
                 color: kind === "err" ? Theme.terminal_error
                        : kind === "info" ? Theme.terminal_text_secondary

@@ -12,9 +12,9 @@ Dialog {
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     background: Rectangle {
-        color: Theme.surface
-        radius: Theme.radius_lg
-        border.color: Theme.border
+        color: Theme.editor_bg
+        radius: Theme.radius_card
+        border.color: Theme.terminal_border
         border.width: 1
     }
 
@@ -27,13 +27,13 @@ Dialog {
         scale: down ? 0.94 : 1.0
         Behavior on scale { NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
         contentItem: Icon { name: rb.glyph; size: 18
-                            color: rb.enabled ? Theme.text : Theme.text_disabled
+                            color: rb.enabled ? Theme.editor_text : Theme.terminal_text_disabled
                             anchors.centerIn: parent }
         background: Rectangle {
             radius: Theme.radius_pill
-            color: !rb.enabled ? Theme.surface_2
-                   : rb.hovered ? Theme.surface_alt : Theme.surface_2
-            border.color: Theme.border; border.width: 1
+            color: !rb.enabled ? Theme.editor_bg_alt
+                   : rb.hovered ? Theme.terminal_border : Theme.editor_bg_alt
+            border.color: Theme.terminal_border; border.width: 1
         }
     }
 
@@ -50,8 +50,8 @@ Dialog {
         signal changed(int value)
         Layout.fillWidth: true
         implicitHeight: rowLay.implicitHeight + 2 * Theme.space_base
-        color: Theme.background
-        border.color: Theme.border; border.width: 1
+        color: Theme.editor_bg_alt
+        border.color: Theme.terminal_border; border.width: 1
         radius: Theme.radius_card
         RowLayout {
             id: rowLay
@@ -60,15 +60,15 @@ Dialog {
             spacing: Theme.space_md
             Rectangle {
                 Layout.preferredWidth: 36; Layout.preferredHeight: 36
-                radius: Theme.radius_chip; color: Theme.primary_soft
+                radius: Theme.radius_chip; color: Theme.editor_selection
                 Icon { anchors.centerIn: parent; name: srow.iconName; size: 18; color: Theme.primary }
             }
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 2
-                Label { text: srow.title; color: Theme.text
+                Label { text: srow.title; color: Theme.editor_text
                         font.bold: true; font.pixelSize: Theme.font_title }
-                Label { text: srow.description; color: Theme.text_secondary
+                Label { text: srow.description; color: Theme.terminal_text_secondary
                         font.pixelSize: Theme.font_caption; wrapMode: Text.Wrap; Layout.fillWidth: true }
             }
             RoundBtn {
@@ -77,7 +77,7 @@ Dialog {
             }
             Label {
                 text: srow.value + srow.suffix
-                color: Theme.text; font.bold: true; font.pixelSize: Theme.font_title
+                color: Theme.editor_text; font.bold: true; font.pixelSize: Theme.font_title
                 font.family: Theme.mono_family; horizontalAlignment: Text.AlignHCenter
                 Layout.minimumWidth: 44
             }
@@ -98,7 +98,7 @@ Dialog {
             Layout.bottomMargin: Theme.space_md
             spacing: Theme.space_sm
             Icon { name: "cog"; size: 22; color: Theme.primary }
-            Label { text: "Cài đặt"; color: Theme.text; font.bold: true; font.pixelSize: Theme.font_heading }
+            Label { text: "Cài đặt"; color: Theme.editor_text; font.bold: true; font.pixelSize: Theme.font_heading }
             Item { Layout.fillWidth: true }
             Button {
                 id: closeBtn
@@ -106,13 +106,13 @@ Dialog {
                 scale: down ? 0.94 : 1.0
                 Behavior on scale { NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
                 onClicked: dlg.close()
-                contentItem: Icon { name: "close"; size: 18; color: Theme.text_secondary; anchors.centerIn: parent }
+                contentItem: Icon { name: "close"; size: 18; color: Theme.terminal_text_secondary; anchors.centerIn: parent }
                 background: Rectangle { radius: Theme.radius_pill
-                    color: closeBtn.hovered ? Theme.surface_alt : "transparent" }
+                    color: closeBtn.hovered ? Theme.editor_bg_alt : "transparent" }
             }
         }
 
-        Rectangle { Layout.fillWidth: true; height: 1; color: Theme.border }
+        Rectangle { Layout.fillWidth: true; height: 1; color: Theme.terminal_border }
 
         // Setting rows
         ColumnLayout {

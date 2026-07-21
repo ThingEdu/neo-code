@@ -52,14 +52,17 @@ class _Palette:
     text_secondary:   str = "#6B7280"
     text_disabled:    str = "#AAB1BF"
 
-    # ── Editor / console ───────────────────────────────────────────────────
-    editor_bg:        str = "#FFFFFF"
-    editor_text:      str = "#1E2233"
-    editor_line_hl:   str = "#F1FAF4"   # current-line highlight (soft green)
-    editor_selection: str = "#C8EFD9"   # selection (light green)
+    # ── Editor / console — both dark "device" panels, deliberately two
+    # different shades (editor: soft dark slate-blue, console: neutral
+    # charcoal) so they read as distinct surfaces rather than one block. ────
+    editor_bg:        str = "#1A1D29"   # soft dark slate-blue — editor body
+    editor_bg_alt:    str = "#20242F"   # editor header / gutter chrome
+    editor_text:      str = "#DCE0EA"
+    editor_line_hl:   str = "#242838"   # current-line highlight (subtle lighten)
+    editor_selection: str = "#173C2C"   # selection (dark desaturated green)
 
-    # Console (Terminal + REPL) — deliberately dark, VS Code Dark+ pairing,
-    # so program output reads as a distinct "device" from the light editor.
+    # Console (Terminal + REPL) — VS Code Dark+ pairing, a neutral charcoal
+    # distinct from the editor's slate-blue so output reads as its own device.
     terminal_bg:            str = "#1E1E1E"   # console body
     terminal_bg_alt:        str = "#252526"   # console header / input bar
     terminal_well_bg:       str = "#3C3C3C"   # REPL input recessed well
@@ -70,13 +73,13 @@ class _Palette:
     terminal_error:         str = "#F14C4C"   # bright enough to read on dark
     terminal_success:       str = "#89D185"
 
-    # ── Syntax highlighting (readable on white) ────────────────────────────
-    syn_keyword:      str = "#0A9D4C"   # keywords  — green
-    syn_builtin:      str = "#2563EB"   # builtins  — blue
-    syn_string:       str = "#C2410C"   # strings   — orange
-    syn_number:       str = "#7C3AED"   # numbers   — purple
-    syn_comment:      str = "#9AA3B2"   # comments  — grey
-    syn_decorator:    str = "#D97706"   # decorators— amber
+    # ── Syntax highlighting (readable on the dark editor) ──────────────────
+    syn_keyword:      str = "#4FD98A"   # keywords  — green
+    syn_builtin:      str = "#63A4FF"   # builtins  — blue
+    syn_string:       str = "#F2A65A"   # strings   — orange
+    syn_number:       str = "#B48EFF"   # numbers   — purple
+    syn_comment:      str = "#7C8494"   # comments  — grey
+    syn_decorator:    str = "#FFC078"   # decorators— amber
 
     # ── Content panel ──────────────────────────────────────────────────────
     panel_header_bg:  str = "#FFFFFF"
