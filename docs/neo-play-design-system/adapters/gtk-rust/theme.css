@@ -1,0 +1,156 @@
+/*
+Neo Play design tokens — GTK4 CSS theme.
+
+GTK CSS supports @define-color for colors (used below), but does NOT support
+generic custom properties for lengths (spacing/radius/shadow), so those are
+hardcoded per rule with a comment noting the source token. If a token value
+changes, update it here AND in theme_tokens.rs to keep them in sync.
+
+Load in a Rust/gtk-rs app with:
+    let provider = gtk::CssProvider::new();
+    provider.load_from_path("theme.css");
+    gtk::style_context_add_provider_for_display(
+        &gdk::Display::default().unwrap(),
+        &provider,
+        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+    );
+*/
+
+/* ---------- Color tokens ---------- */
+@define-color color_primary #02D962;
+@define-color color_on_primary #FFFFFF;
+@define-color color_primary_container #C6F7D8;
+@define-color color_on_primary_container #00210F;
+
+@define-color color_secondary #2E77E7;
+@define-color color_on_secondary #FFFFFF;
+@define-color color_secondary_container #D6E7FF;
+@define-color color_on_secondary_container #001C3B;
+
+@define-color color_tertiary #FE2151;
+@define-color color_on_tertiary #FFFFFF;
+
+@define-color color_error #B3261E;
+@define-color color_on_error #FFFFFF;
+
+@define-color color_surface #FFFFFF;
+@define-color color_on_surface #1A1C1E;
+@define-color color_surface_variant #E1E2E8;
+@define-color color_outline #74777F;
+
+/* ---------- Primary Button ---------- */
+/* space.sm+md / shape.sm / type.labelLarge */
+button.primary-button {
+    background-color: @color_primary;
+    color: @color_on_primary;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.12); /* elevation.2 */
+}
+button.primary-button:hover {
+    background-color: shade(@color_primary, 0.92);
+}
+button.primary-button:active {
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.14); /* elevation.3 on press */
+}
+button.primary-button:disabled {
+    background-color: @color_surface_variant;
+    color: @color_outline;
+    box-shadow: none;
+}
+
+/* ---------- Secondary / Tonal Button ---------- */
+button.secondary-button {
+    background-color: @color_secondary_container;
+    color: @color_on_secondary_container;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+button.secondary-button:hover {
+    background-color: shade(@color_secondary_container, 0.95);
+}
+
+/* ---------- Card ---------- */
+/* color.surface / space.md / shape.md / elevation.1 */
+.card {
+    background-color: @color_surface;
+    color: @color_on_surface;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.08);
+}
+
+/* ---------- Text Field / Entry ---------- */
+/* color.outline / shape.sm / space.sm / type.bodyLarge */
+entry {
+    border: 1px solid @color_outline;
+    border-radius: 8px;
+    padding: 8px;
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    background-color: @color_surface;
+    color: @color_on_surface;
+}
+entry:focus {
+    border-color: @color_primary;
+}
+entry.error {
+    border-color: @color_error;
+}
+
+/* ---------- Chip ---------- */
+/* shape.full / space.xs+sm / type.labelMedium */
+.chip {
+    background-color: @color_secondary_container;
+    color: @color_on_secondary_container;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    font-family: Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+}
+.chip.unselected {
+    background-color: @color_surface_variant;
+    color: @color_on_surface;
+}
+
+/* ---------- Dialog ---------- */
+/* color.surface / space.lg / shape.lg / elevation.3 */
+dialog, window.dialog {
+    background-color: @color_surface;
+    border-radius: 16px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.14);
+}
+.dialog-title {
+    font-family: Roboto, sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: @color_on_surface;
+}
+
+/* ---------- Nav / Tab bar ---------- */
+tab {
+    color: @color_outline;
+    font-family: Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+}
+tab:checked {
+    color: @color_primary;
+}
+
+/* ---------- Error / Validation label ---------- */
+label.error-label {
+    color: @color_error;
+    font-family: Roboto, sans-serif;
+    font-size: 12px;
+}

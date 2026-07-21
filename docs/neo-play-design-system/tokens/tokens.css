@@ -1,0 +1,60 @@
+:root {
+  /* ---- Color ---- */
+  --color-primary: #02D962;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #C6F7D8;
+  --color-on-primary-container: #00210F;
+  --color-secondary: #2E77E7;
+  --color-on-secondary: #FFFFFF;
+  --color-secondary-container: #D6E7FF;
+  --color-on-secondary-container: #001C3B;
+  --color-tertiary: #FE2151;
+  --color-on-tertiary: #FFFFFF;
+  --color-error: #B3261E;
+  --color-on-error: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-on-surface: #1A1C1E;
+  --color-surface-variant: #E1E2E8;
+  --color-outline: #74777F;
+
+  /* ---- Typography ---- */
+  --font-family-base: Roboto, -apple-system, "Segoe UI", Arial, sans-serif;
+  --type-display-lg: 400 57px/64px var(--font-family-base);
+  --type-display-md: 400 45px/52px var(--font-family-base);
+  --type-headline-lg: 400 32px/40px var(--font-family-base);
+  --type-headline-md: 400 28px/36px var(--font-family-base);
+  --type-title-lg: 500 22px/28px var(--font-family-base);
+  --type-title-md: 500 16px/24px var(--font-family-base);
+  --type-title-sm: 500 14px/20px var(--font-family-base);
+  --type-body-lg: 400 16px/24px var(--font-family-base);
+  --type-body-md: 400 14px/20px var(--font-family-base);
+  --type-body-sm: 400 12px/16px var(--font-family-base);
+  --type-label-lg: 500 14px/20px var(--font-family-base);
+  --type-label-md: 500 12px/16px var(--font-family-base);
+  --type-label-sm: 500 11px/16px var(--font-family-base);
+
+  /* ---- Spacing ---- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* ---- Shape / Corner Radius ---- */
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* ---- Elevation ---- */
+  --elevation-0: none;
+  --elevation-1: 0px 1px 2px rgba(0,0,0,0.08);
+  --elevation-2: 0px 1px 3px rgba(0,0,0,0.12);
+  --elevation-3: 0px 4px 8px rgba(0,0,0,0.14);
+  --elevation-4: 0px 6px 10px rgba(0,0,0,0.16);
+  --elevation-5: 0px 8px 12px rgba(0,0,0,0.18);
+}

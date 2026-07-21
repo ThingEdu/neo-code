@@ -1,0 +1,134 @@
+/*
+Neo Play design tokens — PyQt6 QSS stylesheet.
+
+QSS does NOT support CSS variables (var(--x)) or box-shadow, so every value
+below is a literal derived from tokens/tokens.json — each rule is commented
+with the token it corresponds to. If a token value changes, update it here
+AND in theme_tokens.py to keep them in sync.
+
+Elevation/shadows are NOT expressed here — apply them in code via
+theme_tokens.Elevation.effect(level) as a QGraphicsDropShadowEffect on the
+widget, since QSS can't do real shadows.
+
+Load with:
+    with open("theme.qss") as f:
+        app.setStyleSheet(f.read())
+*/
+
+/* ---------- Primary Button ---------- */
+/* color.primary / color.onPrimary / space.sm+md / shape.sm / type.labelLarge */
+QPushButton#PrimaryButton {
+    background-color: #02D962;
+    color: #FFFFFF;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-family: "Roboto";
+    font-size: 14px;
+    font-weight: 500;
+}
+QPushButton#PrimaryButton:hover {
+    background-color: #02c458; /* slightly darkened primary for hover feedback */
+}
+QPushButton#PrimaryButton:pressed {
+    background-color: #02b04f;
+}
+QPushButton#PrimaryButton:disabled {
+    background-color: #E1E2E8; /* color.surfaceVariant */
+    color: #74777F;            /* color.outline */
+}
+
+/* ---------- Secondary / Tonal Button ---------- */
+/* color.secondaryContainer / color.onSecondaryContainer */
+QPushButton#SecondaryButton {
+    background-color: #D6E7FF;
+    color: #001C3B;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-family: "Roboto";
+    font-size: 14px;
+    font-weight: 500;
+}
+QPushButton#SecondaryButton:hover {
+    background-color: #c3ddff;
+}
+
+/* ---------- Card (use on a QFrame) ---------- */
+/* color.surface / color.onSurface / space.md / shape.md */
+QFrame#Card {
+    background-color: #FFFFFF;
+    color: #1A1C1E;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #E1E2E8; /* subtle border to compensate for no box-shadow in QSS */
+}
+
+/* ---------- Text Field ---------- */
+/* color.outline / shape.sm / space.sm / type.bodyLarge */
+QLineEdit {
+    border: 1px solid #74777F;
+    border-radius: 8px;
+    padding: 8px;
+    font-family: "Roboto";
+    font-size: 16px;
+    background-color: #FFFFFF;
+    color: #1A1C1E;
+}
+QLineEdit:focus {
+    border: 1px solid #02D962; /* color.primary on focus */
+}
+QLineEdit[error="true"] {
+    border: 1px solid #B3261E; /* color.error */
+}
+
+/* ---------- Chip (use on a small QPushButton or QToolButton) ---------- */
+/* color.secondaryContainer / shape.full / space.xs+sm */
+QPushButton#Chip {
+    background-color: #D6E7FF;
+    color: #001C3B;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    border: none;
+    font-family: "Roboto";
+    font-size: 12px;
+    font-weight: 500;
+}
+QPushButton#Chip[selected="false"] {
+    background-color: #E1E2E8; /* color.surfaceVariant */
+    color: #1A1C1E;
+}
+
+/* ---------- Dialog ---------- */
+/* color.surface / space.lg / shape.lg */
+QDialog {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+}
+QDialog QLabel#DialogTitle {
+    font-family: "Roboto";
+    font-size: 22px;
+    font-weight: 500;
+    color: #1A1C1E;
+}
+
+/* ---------- Navigation / Tab Bar ---------- */
+/* color.surface / color.primary (active) / color.outline (inactive) */
+QTabBar::tab {
+    color: #74777F;
+    font-family: "Roboto";
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+}
+QTabBar::tab:selected {
+    color: #02D962;
+}
+
+/* ---------- Error / Validation Label ---------- */
+/* color.error / type.bodySmall */
+QLabel#ErrorLabel {
+    color: #B3261E;
+    font-family: "Roboto";
+    font-size: 12px;
+}
