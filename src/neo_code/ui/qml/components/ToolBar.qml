@@ -64,15 +64,12 @@ Rectangle {
                     spacing: Theme.space_xs
                     Icon { name: "console"; size: Theme.icon_size
                            color: replBtn.checked ? Theme.secondary_text : Theme.text }
-                    Label { text: "Tương tác"; font.bold: true; font.pixelSize: Theme.font_body
-                            color: replBtn.checked ? Theme.secondary_text : Theme.text
-                            verticalAlignment: Text.AlignVCenter }
                 }
             }
             background: Rectangle {
                 radius: Theme.radius_chip
                 color: replBtn.checked ? Theme.secondary
-                       : replBtn.hovered ? Theme.surface_alt : "transparent"
+                       : replBtn.hovered ? Theme.border_strong : Theme.surface_alt
             }
         }
 

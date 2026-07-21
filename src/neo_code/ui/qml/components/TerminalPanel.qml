@@ -1,4 +1,4 @@
-// Console — light, integrated output panel with a header + clear action.
+// Console — dark, integrated output panel with a header + clear action.
 // Bounded, colour-coded, driven by the signal bridge.
 import QtQuick
 import QtQuick.Controls
@@ -31,28 +31,26 @@ Rectangle {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 38
-            color: Theme.panel_bg
+            color: Theme.terminal_bg_alt
             RowLayout {
                 anchors.fill: parent
                 anchors.leftMargin: Theme.space_base
                 anchors.rightMargin: Theme.space_sm
                 spacing: Theme.space_xs
-                Icon { name: "code_tags"; size: 15; color: Theme.text_secondary }
-                Label { text: "Kết quả"; font.bold: true; font.pixelSize: Theme.font_caption
-                        color: Theme.text_secondary }
+                Icon { name: "code_tags"; size: 15; color: Theme.terminal_text_secondary }
                 Item { Layout.fillWidth: true }
                 Button {
                     id: clearBtn
                     implicitWidth: 30; implicitHeight: 30
                     ToolTip.text: "Xoá kết quả"; ToolTip.visible: hovered; ToolTip.delay: 500
                     onClicked: term.clear()
-                    contentItem: Icon { name: "broom"; size: 15; color: Theme.text_secondary
+                    contentItem: Icon { name: "broom"; size: 15; color: Theme.terminal_text_secondary
                                         anchors.centerIn: parent }
                     background: Rectangle { radius: Theme.radius_chip
-                        color: clearBtn.hovered ? Theme.surface_alt : "transparent" }
+                        color: clearBtn.hovered ? Theme.terminal_border : "transparent" }
                 }
             }
-            Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.border }
+            Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.terminal_border }
         }
 
         // Output
@@ -76,7 +74,7 @@ Rectangle {
                 font.pixelSize: Theme.font_body
                 text: line
                 color: kind === "err" ? Theme.terminal_error
-                       : kind === "info" ? Theme.text_secondary
+                       : kind === "info" ? Theme.terminal_text_secondary
                        : Theme.terminal_text
             }
         }

@@ -18,7 +18,7 @@ Button {
 
     readonly property var _spec: ({
         "primary":     { "bg": Theme.primary,   "hover": Theme.primary_hover,   "fg": Theme.primary_text },
-        "destructive": { "bg": Theme.tertiary,  "hover": Theme.tertiary_hover,  "fg": Theme.tertiary_text },
+        "destructive": { "bg": Theme.error,     "hover": Theme.error_hover,     "fg": Theme.error_text },
         "secondary":   { "bg": Theme.secondary, "hover": Theme.secondary_hover, "fg": Theme.secondary_text },
         "utility":     { "bg": "transparent",   "hover": Theme.surface_alt,     "fg": Theme.text }
     })[ctrl.variant]

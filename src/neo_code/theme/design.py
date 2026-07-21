@@ -60,29 +60,18 @@ MDI_FONT_PATH = Path(__file__).parent.parent / "resources" / "fonts" / "material
 
 # name → codepoint (from @mdi/font 7.4). Add here as new icons are used.
 _MDI_CODEPOINTS = {
-    "book_open": 0xF14F7,        # book-open-variant  → lessons
-    "robot": 0xF06A9,            # robot              → robot feature
     "play": 0xF040A,            # play               → run
     "stop": 0xF04DB,            # stop               → stop
     "console": 0xF07B7,          # console-line       → REPL
     "cog": 0xF08BB,             # cog-outline        → settings
-    "arrow_left": 0xF004D,       # arrow-left         → back
     "file_plus": 0xF0EED,        # file-plus-outline  → new
     "folder_open": 0xF0DCF,      # folder-open-outline→ open
     "save": 0xF0818,            # content-save-outline→ save
-    "target": 0xF04FE,          # target             → lesson goal
-    "lightbulb": 0xF06E9,        # lightbulb-on-outline→ hint
-    "puzzle": 0xF0A66,          # puzzle-outline     → starter code
-    "check_circle": 0xF05E1,     # check-circle-outline→ feedback
-    "flask": 0xF0096,           # flask-outline      → robot API
-    "usb": 0xF0553,             # usb                → find board
     "minus": 0xF0374,           # minus              → stepper down
     "plus": 0xF0415,            # plus               → stepper up
     "format_size": 0xF027F,      # format-size        → font size setting
     "keyboard_tab": 0xF0312,     # keyboard-tab       → tab width setting
     "close": 0xF0156,           # close              → dialog close
-    "circle_outline": 0xF0766,   # circle-outline     → lesson not started
-    "check_filled": 0xF05E0,     # check-circle       → lesson completed
     "broom": 0xF00E2,           # broom              → clear console
     "code_tags": 0xF0174,        # code-tags          → console header
     "python": 0xF0320,          # language-python    → REPL header

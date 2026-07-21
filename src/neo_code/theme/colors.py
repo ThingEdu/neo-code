@@ -30,9 +30,13 @@ class _Palette:
     secondary_hover:  str = "#2361C4"
     secondary_text:   str = "#FFFFFF"
 
-    tertiary:         str = "#FE2151"   # Rogo red
+    tertiary:         str = "#FE2151"   # Rogo red — brand accent only, never destructive/error
     tertiary_hover:   str = "#D91742"
     tertiary_text:    str = "#FFFFFF"
+
+    error:            str = "#B3261E"   # M3 error red — errors/destructive actions only
+    error_hover:      str = "#96201A"
+    error_text:       str = "#FFFFFF"
 
     # ── Surfaces (elevation: canvas → surface_2 → surface/panel) ───────────
     background:       str = "#F7F9FC"   # soft cool-white canvas
@@ -54,10 +58,17 @@ class _Palette:
     editor_line_hl:   str = "#F1FAF4"   # current-line highlight (soft green)
     editor_selection: str = "#C8EFD9"   # selection (light green)
 
-    terminal_bg:      str = "#FBFCFE"   # light console
-    terminal_text:    str = "#2A2F3E"
-    terminal_error:   str = "#E11D48"
-    terminal_success: str = "#059646"
+    # Console (Terminal + REPL) — deliberately dark, VS Code Dark+ pairing,
+    # so program output reads as a distinct "device" from the light editor.
+    terminal_bg:            str = "#1E1E1E"   # console body
+    terminal_bg_alt:        str = "#252526"   # console header / input bar
+    terminal_well_bg:       str = "#3C3C3C"   # REPL input recessed well
+    terminal_border:        str = "#3C3C3C"   # hairlines on dark
+    terminal_text:          str = "#D4D4D4"
+    terminal_text_secondary: str = "#9D9D9D"  # header label, info lines
+    terminal_text_disabled: str = "#6A6A6A"   # placeholder
+    terminal_error:         str = "#F14C4C"   # bright enough to read on dark
+    terminal_success:       str = "#89D185"
 
     # ── Syntax highlighting (readable on white) ────────────────────────────
     syn_keyword:      str = "#0A9D4C"   # keywords  — green
@@ -67,12 +78,6 @@ class _Palette:
     syn_comment:      str = "#9AA3B2"   # comments  — grey
     syn_decorator:    str = "#D97706"   # decorators— amber
 
-    # ── Activity bar (white rail, green-soft selection) ────────────────────
-    activity_bar_bg:      str = "#FFFFFF"
-    activity_bar_active:  str = "#02D962"
-    activity_bar_icon:    str = "#8A92A3"
-    activity_bar_icon_hl: str = "#1E2233"
-
     # ── Content panel ──────────────────────────────────────────────────────
     panel_header_bg:  str = "#FFFFFF"
     panel_header_text: str = "#6B7280"
@@ -81,13 +86,8 @@ class _Palette:
     toolbar_bg:       str = "#FFFFFF"
     toolbar_border:   str = "#E7ECF3"
 
-    # ── Run / Stop buttons ─────────────────────────────────────────────────
-    run_bg:           str = "#02D962"
-    run_bg_hover:     str = "#05C459"
+    # ── Run button (on-primary text) ────────────────────────────────────────
     run_text:         str = "#05231A"   # dark on green (AA)
-    stop_bg:          str = "#FE2151"
-    stop_bg_hover:    str = "#D91742"
-    stop_text:        str = "#FFFFFF"
 
 
 # Module-level singleton — import this everywhere

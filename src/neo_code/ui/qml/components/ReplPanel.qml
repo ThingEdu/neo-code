@@ -1,4 +1,4 @@
-// REPL — friendly light Python console: header, output, input row with send.
+// REPL — dark Python console: header, output, input row with send.
 // Driven by replController (owns the QProcess).
 import QtQuick
 import QtQuick.Controls
@@ -33,28 +33,28 @@ Rectangle {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 38
-            color: Theme.panel_bg
+            color: Theme.terminal_bg_alt
             RowLayout {
                 anchors.fill: parent
                 anchors.leftMargin: Theme.space_base
                 anchors.rightMargin: Theme.space_sm
                 spacing: Theme.space_xs
                 Icon { name: "python"; size: 16; color: Theme.primary }
-                Label { text: "Tương tác Python"; font.bold: true; font.pixelSize: Theme.font_caption
-                        color: Theme.text_secondary }
+                Label { text: "Python REPL"; font.bold: true; font.pixelSize: Theme.font_caption
+                        color: Theme.terminal_text_secondary }
                 Item { Layout.fillWidth: true }
                 Button {
                     id: clearBtn
                     implicitWidth: 30; implicitHeight: 30
                     ToolTip.text: "Xoá"; ToolTip.visible: hovered; ToolTip.delay: 500
                     onClicked: lines.clear()
-                    contentItem: Icon { name: "broom"; size: 15; color: Theme.text_secondary
+                    contentItem: Icon { name: "broom"; size: 15; color: Theme.terminal_text_secondary
                                         anchors.centerIn: parent }
                     background: Rectangle { radius: Theme.radius_chip
-                        color: clearBtn.hovered ? Theme.surface_alt : "transparent" }
+                        color: clearBtn.hovered ? Theme.terminal_border : "transparent" }
                 }
             }
-            Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.border }
+            Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: Theme.terminal_border }
         }
 
         // Output
@@ -79,7 +79,7 @@ Rectangle {
                 text: line
                 color: kind === "echo" ? Theme.primary
                        : kind === "err" ? Theme.terminal_error
-                       : kind === "info" ? Theme.text_secondary
+                       : kind === "info" ? Theme.terminal_text_secondary
                        : Theme.terminal_text
             }
         }
@@ -88,8 +88,8 @@ Rectangle {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 52
-            color: Theme.panel_bg
-            Rectangle { anchors.top: parent.top; width: parent.width; height: 1; color: Theme.border }
+            color: Theme.terminal_bg_alt
+            Rectangle { anchors.top: parent.top; width: parent.width; height: 1; color: Theme.terminal_border }
             RowLayout {
                 anchors.fill: parent
                 anchors.leftMargin: Theme.space_base
@@ -101,8 +101,8 @@ Rectangle {
                     Layout.fillWidth: true
                     implicitHeight: 36
                     radius: Theme.radius_chip
-                    color: Theme.surface_2
-                    border.color: input.activeFocus ? Theme.primary : Theme.border
+                    color: Theme.terminal_well_bg
+                    border.color: input.activeFocus ? Theme.primary : Theme.terminal_border
                     border.width: 1
                     RowLayout {
                         anchors.fill: parent
@@ -113,12 +113,12 @@ Rectangle {
                         TextField {
                             id: input
                             Layout.fillWidth: true
-                            color: Theme.text
+                            color: Theme.terminal_text
                             background: null
                             font.family: Theme.mono_family
                             font.pixelSize: Theme.font_body
                             placeholderText: "Gõ lệnh Python…"
-                            placeholderTextColor: Theme.text_disabled
+                            placeholderTextColor: Theme.terminal_text_disabled
                             onAccepted: repl.send()
                         }
                     }
