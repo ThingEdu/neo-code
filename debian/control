@@ -32,7 +32,6 @@ Description: Educational Python IDE for kids (NEO One / STEM & Robotics)
  students aged 6-12, built for the NEO One education device
  (ARM64/Armbian) and standard Linux desktops.
  .
- Kids write and run Python with a child-friendly editor, guided lessons
- with automatic grading, a REPL, and a robot workspace. The UI is a
- PyQt6 + QML front end; PyQt6 and the Qt6 QML runtime (QtQuick,
+ Kids write and run Python with a child-friendly editor and a REPL. The
+ UI is a PyQt6 + QML front end; PyQt6 and the Qt6 QML runtime (QtQuick,
  QtQuick.Controls) are pulled from apt, never built via pip.

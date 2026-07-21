@@ -4,9 +4,8 @@
 
 NEO Code is a lightweight educational Python IDE built for the
 [NEO One](https://github.com/ThingEdu) education device (ARM64 / Armbian, 2 GB
-RAM) and standard Linux desktops. It pairs a clean code editor with guided,
-auto-graded lessons and a live REPL — everything runs locally, no internet
-required.
+RAM) and standard Linux desktops. It pairs a clean code editor with a live REPL —
+everything runs locally, no internet required.
 
 > **App language:** the user interface is in **Vietnamese**, matching its
 > audience of Vietnamese primary-school students. This README (project docs) is
@@ -62,8 +61,6 @@ Once open:
 | Run / Stop | `F5` runs (30-second limit), `F6` stops |
 | REPL | `F9` toggles the interactive console |
 | Output | Expand the console panel to read stdout / stderr |
-| Lessons | Open the lesson sidebar to pick a lesson; run to get graded feedback |
-| Robot | Open the robot panel to connect a ThingBot board |
 
 ### Keyboard shortcuts
 

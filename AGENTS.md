@@ -68,13 +68,14 @@ controllers, exposes them via `setContextProperty` (plus the palette as `Theme` 
 
 **Adding a feature:** put Qt-clean logic in `features/<name>/`, add a
 `ui/controllers/<name>_controller.py` QObject, register it in `app.py` via
-`setContextProperty`, add `ui/qml/components/<Name>Panel.qml`, and host it in
-`MainWindow.qml`'s sidebar content panel with a `navEntries` entry.
+`setContextProperty`, and add `ui/qml/components/<Name>Panel.qml`. `MainWindow.qml`
+is currently a single-pane canvas (toolbar → editor/terminal or REPL → status bar)
+with no sidebar or nav shell — a feature panel needs its own host/toggle mechanism
+in `MainWindow.qml` since none exists to plug into.
 
 Colors are never hardcoded — reference `Theme.<token>` in QML (backed by
 `theme/colors.py`; add the token there). Persistent state lives in
-`~/.config/neo-code/`: `settings.json` (`core/settings.py`) and
-`lesson_progress.json` (`features/lessons/progress_store.py`).
+`~/.config/neo-code/`: `settings.json` (`core/settings.py`).
 
 ### Execution flow
 
@@ -85,23 +86,11 @@ the temp file. stdout goes line-by-line through `output_parser.parse_line()` →
 `event_bus.stdout_received`; stderr is emitted raw. Both reach QML through
 `SignalBusBridge`.
 
-### Feature logic
-
-`lessons` and `robot` keep only logic + data under `features/<name>/`; their UI is
-`components/{Lessons,Robot}Panel.qml` driven by `{lessons,robot}_controller.py`. Data
-loads from a bundled `data/*_pack.json` via `loader.py`.
-
-Lesson grading (`lessons/evaluator.py`): nonzero exit or any stderr → failure;
-otherwise stdout is whitespace-normalized and compared to the challenge's
-`expected_output`. `feedback_mapper.py` translates Python exception names into
-child-friendly Vietnamese hints. Stars in `progress_store.py` are awarded by attempt
-count (≤1 → 3, ≤3 → 2, else 1) and only ever increase.
-
-The robot feature only globs `/dev/ttyUSB*` and `/dev/ttyACM*` for a board
-(`robot_connection.py`); there is no serial protocol implementation yet, and
-`thingbot-telemetrix` is **not** a dependency (it has no apt package).
-
 ## Notes
+
+- The curriculum (lessons) and robot features were removed from this app; they are
+  being migrated to a separate UI. `features/` has no feature modules right now —
+  only the empty package placeholder. Do not re-add lesson/robot code here.
 
 - The editor uses a QML `TextArea` with the Python `PythonHighlighter`
   (`ui/controllers/editor_bridge.py`) attached to its `QTextDocument`; the
