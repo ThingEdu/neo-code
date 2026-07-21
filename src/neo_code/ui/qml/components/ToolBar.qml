@@ -47,7 +47,7 @@ Rectangle {
             }
             Label {
                 text: "NEO Code"
-                font.bold: true
+                font.weight: Font.Black
                 font.pixelSize: 18
                 color: Theme.editor_text
             }

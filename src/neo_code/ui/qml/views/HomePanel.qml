@@ -132,10 +132,8 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
+        anchors.bottom: parent.bottom
         spacing: Theme.space_sm
-        // Each card is 4:3, portrait (taller than wide): height follows from
-        // the per-card width the 3 equal columns get.
-        height: Math.min((width - spacing * 2) / 3 * 4 / 3, parent.height - Theme.space_sm)
 
         ModeCard {
             modeTitle: "Chơi"
