@@ -26,6 +26,16 @@ Flow {
         }
     }
 
+    // Short cue that the chips below are tappable, not just labels.
+    Label {
+        visible: root.blocks.length > 0
+        width: root.width
+        text: "Nhấn để chèn"
+        color: Theme.terminal_text_disabled
+        font.pixelSize: Theme.font_caption
+        font.bold: true
+    }
+
     Label {
         visible: root.blocks.length === 0
         width: root.width
