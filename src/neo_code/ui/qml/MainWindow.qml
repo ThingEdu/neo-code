@@ -17,6 +17,7 @@ ApplicationWindow {
     color: Theme.background
 
     property bool replActive: false
+    property bool homeActive: true
 
     // ── File dialogs (QtQuick.Dialogs) ─────────────────────────────────────
     FileDialog {
@@ -42,8 +43,16 @@ ApplicationWindow {
         anchors.centerIn: Overlay.overlay
     }
 
+    C.HomePanel {
+        anchors.fill: parent
+        visible: root.homeActive
+        onCreateRequested: root.homeActive = false
+        onSettingsRequested: settingsDialog.open()
+    }
+
     ColumnLayout {
         anchors.fill: parent
+        visible: !root.homeActive
         spacing: 0
 
         // ── Toolbar ────────────────────────────────────────────────────────
