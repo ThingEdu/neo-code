@@ -1,0 +1,16 @@
+{
+    "id": "in-loi-chao",
+    "title": "In lời chào",
+    "goal": "Hãy in ra màn hình dòng chữ \"Xin chao\".",
+    "instruction": "Trong Python, lệnh print() dùng để hiển thị nội dung ra màn hình.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng lệnh print() để in một dòng chữ ra màn hình.",
+        "Chuỗi ký tự cần được đặt trong dấu ngoặc kép, ví dụ: \"Xin chao\".",
+        "Kết quả đầy đủ là: print(\"Xin chao\")"
+    ],
+    "blocks": [
+        { "label": "print()", "insert": "print(\"$0\")", "kind": "builtin" }
+    ],
+    "expected": "Xin chao\n"
+}

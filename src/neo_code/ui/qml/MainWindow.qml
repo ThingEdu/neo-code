@@ -1,12 +1,12 @@
-// NEO Code — main window. A single focused canvas: toolbar, file header,
-// editor/terminal (or REPL). No sidebar — there is nothing left to navigate to.
-// Qt 6.4-compatible.
+// NEO Code — main window. Toolbar + one of three views: home (mode select),
+// Sáng tạo (editor/terminal or REPL), or Học (curriculum sidebar + editor +
+// Expected/Result console). Qt 6.4-compatible.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Dialogs
-import "components" as C
+import "components/common" as Common
 import "views" as V
 
 ApplicationWindow {
@@ -18,7 +18,9 @@ ApplicationWindow {
     color: Theme.background
 
     property bool replActive: false
-    property bool homeActive: true
+    property string mode: "home"   // home | create | learn
+    readonly property bool homeActive: root.mode === "home"
+    readonly property bool learnActive: root.mode === "learn"
 
     // ── File dialogs (QtQuick.Dialogs) ─────────────────────────────────────
     FileDialog {
@@ -35,10 +37,10 @@ ApplicationWindow {
         fileMode: FileDialog.SaveFile
         nameFilters: ["Tệp Python (*.py)", "Tất cả tệp (*)"]
         currentFolder: files.lastOpenFolder
-        onAccepted: files.saveAs(selectedFile, editor.text)
+        onAccepted: files.saveAs(selectedFile, createView.currentText)
     }
 
-    C.SettingsDialog {
+    Common.SettingsDialog {
         id: settingsDialog
         objectName: "settingsDialog"
         anchors.centerIn: Overlay.overlay
@@ -51,38 +53,38 @@ ApplicationWindow {
         // ── Toolbar — persistent across the home screen and the IDE.
         // Rounded corners so it reads as a floating bar; the same margin is
         // used everywhere (matches the editor↔console gap in IDE mode). ──
-        C.ToolBar {
+        Common.ToolBar {
             Layout.fillWidth: true
             Layout.margins: Theme.space_sm
             homeMode: root.homeActive
+            learnMode: root.learnActive
             running: execution.running
             replActive: root.replActive
-            onBackRequested: root.homeActive = true
+            onBackRequested: root.mode = "home"
             onNewRequested: files.newFile()
             onOpenRequested: openDialog.open()
-            onSaveRequested: files.hasFile ? files.save(editor.text) : saveDialog.open()
-            onRunRequested: execution.run(editor.text)
+            onSaveRequested: files.hasFile ? files.save(createView.currentText) : saveDialog.open()
+            onRunRequested: execution.run(root.learnActive ? learnView.currentText : createView.currentText)
             onStopRequested: execution.stop()
             onReplToggled: function(active) { root.replActive = active; execution.setReplMode(active) }
             onSettingsRequested: settingsDialog.open()
         }
 
-        V.HomePanel {
+        V.HomeView {
             Layout.fillWidth: true
             Layout.fillHeight: true
             // No top margin — the toolbar's own bottom margin already
-            // supplies that gap (see the matching main-area Item below).
+            // supplies that gap (see the matching main-area views below).
             Layout.leftMargin: Theme.space_sm
             Layout.rightMargin: Theme.space_sm
             Layout.bottomMargin: Theme.space_sm
             visible: root.homeActive
-            onCreateRequested: root.homeActive = false
+            onCreateRequested: root.mode = "create"
+            onLearnRequested: root.mode = "learn"
         }
 
-        // ── Main area: editor (with its own file-tab header) beside the
-        // terminal, or REPL full — the file tab lives inside EditorPanel now,
-        // snapped to the editor it names instead of floating separately. ──
-        Item {
+        V.CreateView {
+            id: createView
             Layout.fillWidth: true
             Layout.fillHeight: true
             // No top margin — the toolbar's own bottom margin already supplies
@@ -90,46 +92,18 @@ ApplicationWindow {
             Layout.leftMargin: Theme.space_sm
             Layout.rightMargin: Theme.space_sm
             Layout.bottomMargin: Theme.space_sm
-            visible: !root.homeActive
-
-            // Editor beside terminal (script mode) — each pane floats as its
-            // own rounded card; the handle's gap is transparent so the two
-            // cards read as separate, not one panel with a divider.
-            SplitView {
-                anchors.fill: parent
-                visible: !root.replActive
-                orientation: Qt.Horizontal
-
-                handle: Item {
-                    implicitWidth: Theme.space_sm
-                    implicitHeight: Theme.space_sm
-                }
-
-                V.EditorPanel {
-                    id: editor
-                    SplitView.fillWidth: true
-                    SplitView.minimumWidth: 300
-                    text: "# NEO Code\nfor i in range(3):\n    print(\"Xin chào\", i)\n"
-                }
-
-                V.TerminalPanel {
-                    SplitView.preferredWidth: 380
-                    SplitView.minimumWidth: 220
-                }
-            }
-
-            // REPL takes over the whole area (interactive mode)
-            V.ReplPanel {
-                anchors.fill: parent
-                visible: root.replActive
-            }
+            visible: root.mode === "create"
+            replActive: root.replActive
         }
-    }
 
-    // Editor content follows file lifecycle
-    Connections {
-        target: signalBus
-        function onFileOpened(path, content) { editor.text = content }
-        function onFileNew() { editor.text = "" }
+        V.LearnView {
+            id: learnView
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.leftMargin: Theme.space_sm
+            Layout.rightMargin: Theme.space_sm
+            Layout.bottomMargin: Theme.space_sm
+            visible: root.mode === "learn"
+        }
     }
 }

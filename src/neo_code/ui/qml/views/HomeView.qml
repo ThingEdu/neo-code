@@ -1,10 +1,10 @@
 // Home — mode-select landing screen shown before the IDE canvas.
-// Only "Sáng tạo" (Create) is implemented in this repo; "Học" and "Chơi" are
-// being migrated to a separate app (see AGENTS.md) and show as coming soon.
+// "Sáng tạo" (Create) and "Học" (Learn) are implemented; "Chơi" (robot) is
+// being migrated to a separate app (see AGENTS.md) and shows as coming soon.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import "../components"
+import "../components/common"
 
 Rectangle {
     id: home
@@ -16,6 +16,7 @@ Rectangle {
     readonly property real textScale: Math.max(1.22, width / 1280)
 
     signal createRequested()
+    signal learnRequested()
 
     component ModeCard: Button {
         id: card
@@ -27,6 +28,7 @@ Rectangle {
         required property color badgeBg
         required property color iconBg
         property bool available: false
+        property string targetMode: "create"
 
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -35,7 +37,11 @@ Rectangle {
         scale: down ? 0.98 : 1.0
         Behavior on scale { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
 
-        onClicked: if (card.available) home.createRequested()
+        onClicked: {
+            if (!card.available) return
+            if (card.targetMode === "learn") home.learnRequested()
+            else home.createRequested()
+        }
 
         // Two solid, opaque layers rather than a translucent Rectangle.border —
         // a translucent border color does not render on this Qt build.
@@ -124,7 +130,7 @@ Rectangle {
     }
 
     // Mode cards sit directly on the canvas — no wrapping panel. No top
-    // margin here: HomePanel's own top edge is already 8px below the
+    // margin here: HomeView's own top edge is already 8px below the
     // toolbar (from the toolbar's own bottom margin, MainWindow.qml) —
     // adding one here would double that gap, same as the editor's Item.
     RowLayout {
@@ -153,7 +159,8 @@ Rectangle {
             fgColor: Theme.primary_text
             badgeBg: Qt.rgba(0, 0, 0, 0.14)
             iconBg: Qt.rgba(0, 0, 0, 0.12)
-            available: false
+            available: true
+            targetMode: "learn"
         }
         ModeCard {
             modeTitle: "Sáng tạo"
@@ -164,6 +171,7 @@ Rectangle {
             badgeBg: Qt.rgba(1, 1, 1, 0.28)
             iconBg: Qt.rgba(1, 1, 1, 0.28)
             available: true
+            targetMode: "create"
         }
     }
 }

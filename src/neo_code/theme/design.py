@@ -78,6 +78,13 @@ _MDI_CODEPOINTS = {
     "code_tags": 0xF0174,        # code-tags          → console header
     "python": 0xF0320,          # language-python    → REPL header
     "chevron_right": 0xF0142,    # chevron-right      → REPL send / prompt
+    "chevron_left": 0xF0141,     # chevron-left       → collapse sidebar
+    "target": 0xF04FE,          # target             → expected-output pane, challenge card
+    "circle_outline": 0xF0766,   # circle-outline     → lesson not started
+    "check_filled": 0xF05E0,     # check-circle       → lesson completed
+    "puzzle": 0xF0A66,          # puzzle-outline     → code block palette
+    "lightbulb": 0xF06E9,        # lightbulb-on-outline→ hint panel
+    "lock": 0xF033E,            # lock-outline       → locked lesson node
 }
 
 # name → glyph character, for the `Mdi` context object (Mdi.play, …)

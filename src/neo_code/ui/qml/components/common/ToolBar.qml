@@ -17,6 +17,7 @@ Rectangle {
     property bool running: false
     property bool replActive: false
     property bool homeMode: false
+    property bool learnMode: false
 
     signal backRequested()
     signal newRequested()
@@ -59,20 +60,20 @@ Rectangle {
             ToolTip.text: "Quay lại"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
 
-        Rectangle { visible: !bar.homeMode; Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.terminal_border }
+        Rectangle { visible: !bar.homeMode && !bar.learnMode; Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.terminal_border }
 
         AppButton {
-            visible: !bar.homeMode; variant: "utility"; iconName: "file_plus"
+            visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "file_plus"
             onClicked: bar.newRequested()
             ToolTip.text: "Mới"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
         AppButton {
-            visible: !bar.homeMode; variant: "utility"; iconName: "folder_open"
+            visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "folder_open"
             onClicked: bar.openRequested()
             ToolTip.text: "Mở"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
         AppButton {
-            visible: !bar.homeMode; variant: "utility"; iconName: "save"
+            visible: !bar.homeMode && !bar.learnMode; variant: "utility"; iconName: "save"
             onClicked: bar.saveRequested()
             ToolTip.text: "Lưu"; ToolTip.visible: hovered; ToolTip.delay: 500
         }
@@ -99,7 +100,7 @@ Rectangle {
         // REPL toggle — secondary (blue) when active
         Button {
             id: replBtn
-            visible: !bar.homeMode
+            visible: !bar.homeMode && !bar.learnMode
             checkable: true
             checked: bar.replActive
             implicitHeight: Theme.control_base

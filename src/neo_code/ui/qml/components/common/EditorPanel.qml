@@ -17,6 +17,20 @@ Rectangle {
     property int fontSize: settings.fontSize
     property int tabWidth: settings.tabWidth
 
+    // Tap-to-insert (Học mode's block palette) — inserts at the cursor and
+    // keeps typing available immediately after, rather than replacing text.
+    // A "$0" marker in insertText (e.g. print("$0")) says where the blank
+    // is; the cursor lands there instead of at the end so the student can
+    // fill it in right away.
+    function insertAtCursor(insertText) {
+        var markerIndex = insertText.indexOf("$0")
+        var clean = markerIndex >= 0 ? insertText.replace("$0", "") : insertText
+        var start = editor.cursorPosition
+        editor.insert(start, clean)
+        editor.cursorPosition = markerIndex >= 0 ? start + markerIndex : start + clean.length
+        editor.forceActiveFocus()
+    }
+
     // Uniform line height holds because wrapMode is NoWrap + monospace font.
     readonly property real lineH: editor.lineCount > 0
         ? editor.contentHeight / editor.lineCount : editor.font.pixelSize * 1.4

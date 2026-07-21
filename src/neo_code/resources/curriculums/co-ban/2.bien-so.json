@@ -1,0 +1,17 @@
+{
+    "id": "bien-so",
+    "title": "Biến số",
+    "goal": "Tạo một biến tên so_yeu_thich với giá trị 7, rồi in biến đó ra màn hình.",
+    "instruction": "Biến là nơi lưu trữ một giá trị để dùng lại sau này. Dùng dấu = để gán giá trị cho biến.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng dấu = để gán giá trị cho một biến, ví dụ: so_yeu_thich = 7",
+        "Sau khi tạo biến, dùng print(so_yeu_thich) để in giá trị của nó ra màn hình.",
+        "Kết quả đầy đủ:\nso_yeu_thich = 7\nprint(so_yeu_thich)"
+    ],
+    "blocks": [
+        { "label": "biến = giá trị", "insert": "so_yeu_thich = 7", "kind": "keyword" },
+        { "label": "print()", "insert": "print(so_yeu_thich)", "kind": "builtin" }
+    ],
+    "expected": "7\n"
+}

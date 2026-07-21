@@ -1,0 +1,17 @@
+{
+    "id": "phep-tinh",
+    "title": "Phép tính",
+    "goal": "Hãy in ra kết quả của phép tính 2 + 3.",
+    "instruction": "Python có thể tính toán các phép cộng, trừ, nhân, chia ngay bên trong lệnh print().",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Python có thể tính toán ngay trong lệnh print(), ví dụ: print(1 + 1)",
+        "Thử thay hai số trong hint trước bằng 2 và 3.",
+        "Kết quả đầy đủ là: print(2 + 3)"
+    ],
+    "blocks": [
+        { "label": "print()", "insert": "print($0)", "kind": "builtin" },
+        { "label": "2 + 3", "insert": "2 + 3", "kind": "number" }
+    ],
+    "expected": "5\n"
+}
