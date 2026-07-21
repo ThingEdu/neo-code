@@ -1,0 +1,16 @@
+{
+    "id": "lap-qua-danh-sach",
+    "title": "Duyệt qua danh sách",
+    "goal": "Dùng vòng lặp for để in ra từng loại trái cây trong danh sách trai_cay.",
+    "instruction": "Có thể dùng for item in danh_sach: để lần lượt lấy ra từng phần tử trong danh sách mà không cần biết chỉ số.",
+    "starter": "trai_cay = [\"tao\", \"cam\", \"xoai\"]\n# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng for qua in trai_cay: rồi xuống dòng, thụt lề.",
+        "Bên trong vòng lặp, in ra biến qua bằng print(qua).",
+        "Kết quả đầy đủ là:\ntrai_cay = [\"tao\", \"cam\", \"xoai\"]\nfor qua in trai_cay:\n    print(qua)"
+    ],
+    "blocks": [
+        { "label": "for ... in list:", "insert": "for qua in trai_cay:\n    print(qua)", "kind": "keyword" }
+    ],
+    "expected": "tao\ncam\nxoai\n"
+}

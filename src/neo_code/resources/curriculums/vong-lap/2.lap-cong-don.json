@@ -1,0 +1,18 @@
+{
+    "id": "lap-cong-don",
+    "title": "Cộng dồn trong vòng lặp",
+    "goal": "Tính tổng các số từ 1 đến 5 bằng vòng lặp for, rồi in kết quả ra màn hình.",
+    "instruction": "Có thể dùng một biến tong = 0 để cộng dồn giá trị mỗi lần lặp qua, dùng dấu += để cộng thêm vào biến đó.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Tạo biến tong = 0 trước vòng lặp.",
+        "Dùng for so in range(1, 6): rồi bên trong viết tong += so",
+        "Kết quả đầy đủ là:\ntong = 0\nfor so in range(1, 6):\n    tong += so\nprint(tong)"
+    ],
+    "blocks": [
+        { "label": "tong = 0", "insert": "tong = 0", "kind": "keyword" },
+        { "label": "for ... in range():", "insert": "for so in range(1, 6):\n    tong += so", "kind": "keyword" },
+        { "label": "print()", "insert": "print(tong)", "kind": "builtin" }
+    ],
+    "expected": "15\n"
+}

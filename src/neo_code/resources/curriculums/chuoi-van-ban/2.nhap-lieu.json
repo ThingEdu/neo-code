@@ -1,0 +1,17 @@
+{
+    "id": "nhap-lieu",
+    "title": "Nhập tên",
+    "goal": "Dùng input() để hỏi tên, lưu vào biến ten, rồi in ra dòng \"Xin chao\" kèm theo tên đó.",
+    "instruction": "Lệnh input() cho phép chương trình nhận chữ mà em gõ vào từ bàn phím. Ví dụ dưới đây dùng tên \"An\" — khi em tự chạy, em có thể gõ tên của mình.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng ten = input() để lưu chữ em gõ vào biến ten.",
+        "Nối chuỗi \"Xin chao \" với biến ten rồi in ra bằng print().",
+        "Kết quả đầy đủ là:\nten = input()\nprint(\"Xin chao \" + ten)"
+    ],
+    "blocks": [
+        { "label": "input()", "insert": "ten = input()", "kind": "builtin" },
+        { "label": "print()", "insert": "print(\"Xin chao \" + ten)", "kind": "builtin" }
+    ],
+    "expected": "Xin chao An\n"
+}

@@ -1,0 +1,18 @@
+{
+    "id": "if-elif-else",
+    "title": "if - elif - else",
+    "goal": "Tạo biến diem = 8. In \"Gioi\" nếu diem >= 8, in \"Kha\" nếu diem >= 6.5, còn lại in \"Can co gang\".",
+    "instruction": "elif cho phép kiểm tra thêm một điều kiện khác nếu điều kiện if đầu tiên sai.",
+    "starter": "diem = 8\n# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng if diem >= 8: cho trường hợp đầu tiên.",
+        "Dùng elif diem >= 6.5: cho trường hợp thứ hai, else: cho trường hợp còn lại.",
+        "Kết quả đầy đủ là:\ndiem = 8\nif diem >= 8:\n    print(\"Gioi\")\nelif diem >= 6.5:\n    print(\"Kha\")\nelse:\n    print(\"Can co gang\")"
+    ],
+    "blocks": [
+        { "label": "if ... :", "insert": "if diem >= 8:\n    ", "kind": "keyword" },
+        { "label": "elif ... :", "insert": "elif diem >= 6.5:\n    ", "kind": "keyword" },
+        { "label": "else:", "insert": "else:\n    ", "kind": "keyword" }
+    ],
+    "expected": "Gioi\n"
+}

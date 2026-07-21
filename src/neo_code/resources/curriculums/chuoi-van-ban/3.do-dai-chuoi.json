@@ -1,0 +1,17 @@
+{
+    "id": "do-dai-chuoi",
+    "title": "Độ dài chuỗi",
+    "goal": "In ra số ký tự của chuỗi \"NEO Code\" bằng lệnh len().",
+    "instruction": "Lệnh len() đếm xem một chuỗi có bao nhiêu ký tự, kể cả khoảng trắng.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "len(\"NEO Code\") sẽ trả về số ký tự trong chuỗi đó.",
+        "Đặt len(\"NEO Code\") vào trong print() để in ra kết quả.",
+        "Kết quả đầy đủ là: print(len(\"NEO Code\"))"
+    ],
+    "blocks": [
+        { "label": "print()", "insert": "print($0)", "kind": "builtin" },
+        { "label": "len()", "insert": "len(\"NEO Code\")", "kind": "builtin" }
+    ],
+    "expected": "8\n"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "lap-so-lan",
+    "title": "Lặp lại nhiều lần",
+    "goal": "Dùng vòng lặp for để in chữ \"Xin chao\" ra màn hình 3 lần.",
+    "instruction": "Vòng lặp for kết hợp với range(n) sẽ lặp lại n lần. range(3) nghĩa là lặp 3 lần.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng for i in range(3): rồi xuống dòng, thụt lề.",
+        "Bên trong vòng lặp, viết print(\"Xin chao\").",
+        "Kết quả đầy đủ là:\nfor i in range(3):\n    print(\"Xin chao\")"
+    ],
+    "blocks": [
+        { "label": "for ... in range():", "insert": "for i in range(3):\n    ", "kind": "keyword" },
+        { "label": "print()", "insert": "print(\"Xin chao\")", "kind": "builtin" }
+    ],
+    "expected": "Xin chao\nXin chao\nXin chao\n"
+}

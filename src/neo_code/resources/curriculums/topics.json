@@ -1,3 +1,32 @@
 [
-    { "id": "co-ban", "title": "Cơ bản", "order": 1, "icon": "puzzle" }
+    {
+        "id": "co-ban",
+        "title": "Cơ bản",
+        "order": 1,
+        "icon": "puzzle"
+    },
+    {
+        "id": "chuoi-van-ban",
+        "title": "Chuỗi & văn bản",
+        "order": 2,
+        "icon": "text_box"
+    },
+    {
+        "id": "dieu-kien",
+        "title": "Điều kiện",
+        "order": 3,
+        "icon": "call_split"
+    },
+    {
+        "id": "vong-lap",
+        "title": "Vòng lặp",
+        "order": 4,
+        "icon": "repeat"
+    },
+    {
+        "id": "danh-sach",
+        "title": "Danh sách",
+        "order": 5,
+        "icon": "format_list_bulleted"
+    }
 ]

@@ -1,0 +1,18 @@
+{
+    "id": "if-else",
+    "title": "Câu lệnh if - else",
+    "goal": "Tạo biến tuoi = 10. Nếu tuoi lớn hơn hoặc bằng 6 thì in \"Duoc di hoc\", ngược lại in \"Con nho qua\".",
+    "instruction": "Câu lệnh if kiểm tra một điều kiện; nếu đúng thì chạy phần bên trong if, nếu sai thì chạy phần bên trong else. Nhớ thụt lề (căn khoảng trắng) cho dòng lệnh bên trong.",
+    "starter": "tuoi = 10\n# Viết code của em ở đây\n",
+    "hints": [
+        "Bắt đầu bằng if tuoi >= 6: rồi xuống dòng, thụt lề, viết print(...)",
+        "Thêm else: ở dưới, xuống dòng, thụt lề, viết print(...) cho trường hợp còn lại.",
+        "Kết quả đầy đủ là:\ntuoi = 10\nif tuoi >= 6:\n    print(\"Duoc di hoc\")\nelse:\n    print(\"Con nho qua\")"
+    ],
+    "blocks": [
+        { "label": "if ... :", "insert": "if tuoi >= 6:\n    ", "kind": "keyword" },
+        { "label": "else:", "insert": "else:\n    ", "kind": "keyword" },
+        { "label": "print()", "insert": "print(\"Duoc di hoc\")", "kind": "builtin" }
+    ],
+    "expected": "Duoc di hoc\n"
+}

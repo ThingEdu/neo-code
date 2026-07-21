@@ -1,0 +1,17 @@
+{
+    "id": "tao-danh-sach",
+    "title": "Tạo danh sách",
+    "goal": "Tạo một danh sách trai_cay gồm 3 loại trái cây, rồi in cả danh sách ra màn hình.",
+    "instruction": "Danh sách (list) lưu nhiều giá trị trong một biến, đặt trong dấu ngoặc vuông [ ], phân cách bằng dấu phẩy.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng dấu [ ] để tạo danh sách, ví dụ: [\"tao\", \"cam\", \"xoai\"]",
+        "Gán danh sách đó cho biến trai_cay rồi in biến ra bằng print().",
+        "Kết quả đầy đủ là:\ntrai_cay = [\"tao\", \"cam\", \"xoai\"]\nprint(trai_cay)"
+    ],
+    "blocks": [
+        { "label": "list = [...]", "insert": "trai_cay = [\"tao\", \"cam\", \"xoai\"]", "kind": "keyword" },
+        { "label": "print()", "insert": "print(trai_cay)", "kind": "builtin" }
+    ],
+    "expected": "['tao', 'cam', 'xoai']\n"
+}

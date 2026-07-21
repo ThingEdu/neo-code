@@ -1,0 +1,17 @@
+{
+    "id": "noi-chuoi",
+    "title": "Nối chuỗi",
+    "goal": "Hãy in ra dòng chữ \"Xin chao ban\" bằng cách nối hai chuỗi \"Xin chao \" và \"ban\".",
+    "instruction": "Trong Python, dùng dấu + để nối hai chuỗi ký tự với nhau.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng dấu + để ghép hai chuỗi lại, ví dụ: \"Xin \" + \"chao\"",
+        "Đặt chuỗi đã nối vào trong lệnh print() để hiển thị ra màn hình.",
+        "Kết quả đầy đủ là: print(\"Xin chao \" + \"ban\")"
+    ],
+    "blocks": [
+        { "label": "print()", "insert": "print($0)", "kind": "builtin" },
+        { "label": "\"a\" + \"b\"", "insert": "\"Xin chao \" + \"ban\"", "kind": "string" }
+    ],
+    "expected": "Xin chao ban\n"
+}

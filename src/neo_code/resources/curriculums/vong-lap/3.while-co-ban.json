@@ -1,0 +1,17 @@
+{
+    "id": "while-co-ban",
+    "title": "Vòng lặp while",
+    "goal": "Dùng vòng lặp while để in số từ 1 đến 3.",
+    "instruction": "Vòng lặp while lặp lại khi điều kiện còn đúng. Nhớ tăng biến đếm bên trong vòng lặp để tránh lặp mãi mãi.",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Tạo biến so = 1 trước vòng lặp.",
+        "Dùng while so <= 3: rồi bên trong in ra so và tăng so += 1.",
+        "Kết quả đầy đủ là:\nso = 1\nwhile so <= 3:\n    print(so)\n    so += 1"
+    ],
+    "blocks": [
+        { "label": "so = 1", "insert": "so = 1", "kind": "keyword" },
+        { "label": "while ... :", "insert": "while so <= 3:\n    print(so)\n    so += 1", "kind": "keyword" }
+    ],
+    "expected": "1\n2\n3\n"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "so-sanh",
+    "title": "So sánh hai số",
+    "goal": "In ra kết quả True hoặc False khi so sánh xem 5 có lớn hơn 3 không.",
+    "instruction": "Python dùng các dấu >, <, == để so sánh hai giá trị. Kết quả so sánh là True (đúng) hoặc False (sai).",
+    "starter": "# Viết code của em ở đây\n",
+    "hints": [
+        "Dùng dấu > để so sánh, ví dụ: 5 > 3",
+        "Đặt phép so sánh vào trong print() để xem kết quả.",
+        "Kết quả đầy đủ là: print(5 > 3)"
+    ],
+    "blocks": [
+        { "label": "print()", "insert": "print($0)", "kind": "builtin" },
+        { "label": "5 > 3", "insert": "5 > 3", "kind": "number" }
+    ],
+    "expected": "True\n"
+}

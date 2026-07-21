@@ -1,0 +1,17 @@
+{
+    "id": "truy-cap-phan-tu",
+    "title": "Truy cập phần tử",
+    "goal": "In ra phần tử đầu tiên trong danh sách trai_cay bằng chỉ số [0].",
+    "instruction": "Mỗi phần tử trong danh sách có một chỉ số (index), bắt đầu từ 0. trai_cay[0] là phần tử đầu tiên.",
+    "starter": "trai_cay = [\"tao\", \"cam\", \"xoai\"]\n# Viết code của em ở đây\n",
+    "hints": [
+        "Chỉ số đầu tiên trong danh sách luôn là 0, không phải 1.",
+        "Dùng trai_cay[0] để lấy phần tử đầu tiên rồi in ra bằng print().",
+        "Kết quả đầy đủ là:\ntrai_cay = [\"tao\", \"cam\", \"xoai\"]\nprint(trai_cay[0])"
+    ],
+    "blocks": [
+        { "label": "list[0]", "insert": "trai_cay[0]", "kind": "number" },
+        { "label": "print()", "insert": "print(trai_cay[0])", "kind": "builtin" }
+    ],
+    "expected": "tao\n"
+}

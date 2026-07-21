@@ -85,6 +85,10 @@ _MDI_CODEPOINTS = {
     "puzzle": 0xF0A66,          # puzzle-outline     → code block palette
     "lightbulb": 0xF06E9,        # lightbulb-on-outline→ hint panel
     "lock": 0xF033E,            # lock-outline       → locked lesson node
+    "text_box": 0xF09ED,         # text-box-outline   → topic: Chuỗi & văn bản
+    "call_split": 0xF00FB,       # call-split         → topic: Điều kiện
+    "repeat": 0xF0456,          # repeat             → topic: Vòng lặp
+    "format_list_bulleted": 0xF0279,  # format-list-bulleted → topic: Danh sách
 }
 
 # name → glyph character, for the `Mdi` context object (Mdi.play, …)
