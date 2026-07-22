@@ -1,7 +1,7 @@
 Source: neo-code
 Section: education
 Priority: optional
-Maintainer: Maker Việt <everwellmax@gmail.com>
+Maintainer: ThingEdu <everwellmax@gmail.com>
 Build-Depends: debhelper-compat (= 13),
  dh-python,
  python3-all,

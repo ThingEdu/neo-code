@@ -6,7 +6,7 @@ neo-code (0.6.1) unstable; urgency=medium
   * Học mode: toolbar now has New/Open/Save like Sáng tạo, and the result
     console has a clear button.
 
- -- Maker Việt <everwellmax@gmail.com>  Tue, 21 Jul 2026 17:41:00 +0700
+ -- ThingEdu <everwellmax@gmail.com>  Tue, 21 Jul 2026 17:41:00 +0700
 
 neo-code (0.6.0) unstable; urgency=medium
 
@@ -17,7 +17,7 @@ neo-code (0.6.0) unstable; urgency=medium
   * Học mode: 4 new curriculum topics with 12 lessons.
   * Console output wraps; scrollback capped at 1000 lines.
 
- -- Maker Việt <everwellmax@gmail.com>  Tue, 21 Jul 2026 17:30:00 +0700
+ -- ThingEdu <everwellmax@gmail.com>  Tue, 21 Jul 2026 17:30:00 +0700
 
 neo-code (0.5.0) unstable; urgency=medium
 
@@ -27,7 +27,7 @@ neo-code (0.5.0) unstable; urgency=medium
     fonts, Material Design Icons, integrated light consoles.
   * Remove the in-app updater; updates go through scripts/install_on_neo.sh.
 
- -- Maker Việt <everwellmax@gmail.com>  Tue, 21 Jul 2026 01:50:00 +0700
+ -- ThingEdu <everwellmax@gmail.com>  Tue, 21 Jul 2026 01:50:00 +0700
 
 neo-code (0.4.0) unstable; urgency=medium
 
@@ -37,4 +37,4 @@ neo-code (0.4.0) unstable; urgency=medium
     the ARM install strategy of scripts/install_on_neo.sh.
   * Drop unused Jedi / pyflakes / thingbot-telemetrix dependencies.
 
- -- Maker Việt <everwellmax@gmail.com>  Mon, 20 Jul 2026 12:00:00 +0700
+ -- ThingEdu <everwellmax@gmail.com>  Mon, 20 Jul 2026 12:00:00 +0700
