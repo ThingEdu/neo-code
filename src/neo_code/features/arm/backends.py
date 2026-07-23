@@ -14,10 +14,33 @@ from __future__ import annotations
 
 import contextlib
 import io
+import sys
+from pathlib import Path
 
 # Gripper is a servo like any other; these are the two positions it takes.
 GRIP_CLOSED_ANGLE = 0
 GRIP_OPEN_ANGLE = 60
+
+
+def _telemetrix_class() -> type:
+    """Return the `Telemetrix` class, preferring a real installation.
+
+    A properly installed `thingbot-telemetrix` wins, so a newer one on the
+    machine is not shadowed by the copy we bundle. Failing that, the bundled
+    copy in `_vendor/` is put on `sys.path` under its own top-level name — it
+    imports itself absolutely, so it cannot be imported as a submodule of
+    `neo_code`. See `_vendor/README.md`.
+    """
+    try:
+        from thingbot_telemetrix import Telemetrix
+    except ModuleNotFoundError:
+        vendor = Path(__file__).resolve().parents[2] / "_vendor"
+        if not vendor.is_dir():
+            raise
+        if str(vendor) not in sys.path:
+            sys.path.append(str(vendor))
+        from thingbot_telemetrix import Telemetrix
+    return Telemetrix
 
 
 class MockBackend:
@@ -43,9 +66,10 @@ class TelemetrixBackend:
     name = "hardware"
 
     def __init__(self, com_port: str | None = None) -> None:
-        # Imported here, not at module scope: the package is optional, and a
-        # missing one must degrade to MockBackend rather than break app start.
-        from thingbot_telemetrix import Telemetrix
+        # Resolved here, not at module scope: importing it is the slow, failure
+        # -prone part, and a failure must degrade to MockBackend rather than
+        # break app start.
+        Telemetrix = _telemetrix_class()
 
         # Telemetrix prints its port-scanning progress; that is diagnostics for
         # a CLI tool, not something to leak into a GUI app's own stdout.

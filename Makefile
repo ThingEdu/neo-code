@@ -1,4 +1,4 @@
-.PHONY: install dev run lint format build deb telemetrix-deb debs clean
+.PHONY: install dev run lint format build deb vendor clean
 
 install:
 	pip install -e .
@@ -23,13 +23,9 @@ build:
 deb:
 	bash scripts/build_deb.sh
 
-# thingbot-telemetrix is on PyPI, not in the Debian archive, and bookworm
-# refuses pip into the system Python — so it ships as its own .deb.
-telemetrix-deb:
-	bash scripts/build_telemetrix_deb.sh
-
-# Everything a release needs.
-debs: deb telemetrix-deb
+# Refresh the bundled thingbot-telemetrix; see src/neo_code/_vendor/README.md.
+vendor:
+	bash scripts/vendor_telemetrix.sh
 
 clean:
 	rm -rf build dist *.egg-info

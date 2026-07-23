@@ -55,20 +55,21 @@ hardware.
 
 ### Releasing
 
-`pyproject.toml`'s `version` is the single source of truth. Bump it, `make debs`,
-then attach **both** `.deb`s to a GitHub release (`gh release create vX.Y.Z dist/*.deb`).
-`scripts/install_on_neo.sh` downloads them by tag and hands both to apt in one call,
-which resolves PyQt6 + the Qt6 QML runtime per-architecture. **There is no in-app
-updater** — updates go through the install script. Any new Qt6 QML module a feature
-needs must be added to `debian/control` (e.g. `qml6-module-qtquick-dialogs`).
+**Follow [`RELEASE.md`](RELEASE.md)** — it has the steps, the verification recipe,
+and the notes template the past releases follow. In short: `pyproject.toml`'s
+`version` is the single source of truth; bump it, add a `debian/changelog` stanza,
+`make deb`, then attach the one `.deb` to a GitHub release titled `NEO Code vX.Y.Z`.
+`scripts/install_on_neo.sh` downloads it by tag and installs via apt, which resolves
+PyQt6 + the Qt6 QML runtime per-architecture. **There is no in-app updater** —
+updates go through the install script. Any new Qt6 QML module a feature needs must
+be added to `debian/control` (e.g. `qml6-module-qtquick-dialogs`).
 
-The second `.deb` is `python3-thingbot-telemetrix`, which Chơi mode depends on for
-real hardware. It is a PyPI package, not a Debian one, and bookworm refuses `pip`
-into the system Python — so `make telemetrix-deb` rebuilds the sdist as a package
-(`scripts/build_telemetrix_deb.sh`). Don't hand-write it into `debian/control`:
-`debian/py3dist-overrides` maps the import name so `${python3:Depends}` derives it
-from `pyproject.toml`, keeping the two from drifting. Bump `TELEMETRIX_VERSION` in
-`install_on_neo.sh` when that package's version changes.
+Chơi mode's `thingbot-telemetrix` is **bundled** in `src/neo_code/_vendor/`, not
+depended on: a `.deb` cannot pull from PyPI, and bookworm refuses `pip` into the
+system Python. Because it is inside the Python package, the wheel and the `.deb`
+built from it carry it automatically — nothing extra to ship. Refresh it with
+`make vendor`; see `src/neo_code/_vendor/README.md` for why it keeps its own
+top-level name and how `backends.py` imports it.
 
 ## Architecture
 

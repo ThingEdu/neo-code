@@ -320,30 +320,39 @@ exploring should be able to use `input()`, imports, everything.
 
 ## 7. Packaging
 
-**Resolved in 0.7.1.** `thingbot-telemetrix` 2.2 (AGPL-3.0-or-later) is now on
-PyPI, so `pyproject.toml` depends on it directly and source/venv installs need
-nothing further.
+**Resolved in 0.7.1.** `thingbot-telemetrix` 2.2 (AGPL-3.0-or-later) is bundled
+into the Python package at `src/neo_code/_vendor/`, so the wheel — and the .deb
+built from it — already carry it. One artifact, nothing extra to install.
 
-The .deb cannot use that: apt only resolves apt packages, and bookworm marks the
-system Python externally-managed, so `pip install` into it is refused outright.
-So `scripts/build_telemetrix_deb.sh` rebuilds the PyPI sdist as
-`python3-thingbot-telemetrix`, attached to the same GitHub release.
-`debian/py3dist-overrides` maps the import name onto that package so
-`${python3:Depends}` picks it up, rather than the dependency being hand-written
-into `debian/control` where it could drift from `pyproject.toml`.
+A dependency would not have worked. apt resolves only apt packages, and bookworm
+marks the system Python externally-managed, so a .deb has no way to pull from
+PyPI at install time. Both alternatives were built and rejected: a second
+`python3-thingbot-telemetrix` .deb (shipped briefly in 0.7.1) put a second
+artifact in front of anyone installing by hand, and pip with
+`--break-system-packages` writes into a Python Debian says not to write into,
+where apt cannot track it.
 
-The upstream sdist is pyproject-only with no `setup.py`, which rules out stdeb;
-the build debianizes it over `pybuild-plugin-pyproject`, the same toolchain
-`build_deb.sh` uses.
+Bundling in the *Python* build rather than in `build_deb.sh` is what keeps this
+cheap: setuptools picks the directory up on its own, so a plain `pip install .`
+and the .deb end up with identical code, and there is no packaging-only branch
+to keep working.
 
-Vendoring was rejected: it would put AGPL sources inside an MIT repo and make
-updates a manual copy. Shipping it as a separate package keeps the licences at
-arm's length, which is the ordinary distro arrangement.
+It keeps its own top-level name under `_vendor/` instead of becoming
+`neo_code._vendor.thingbot_telemetrix`, because the library imports itself
+absolutely (`from thingbot_telemetrix.transport import ...`) and a rename breaks
+it. `backends._telemetrix_class()` tries the plain import first — a real
+installation always wins — and only then puts `_vendor/` on `sys.path`.
 
-`debian/control` also carries `python3-serial` (pyserial). The import of
-`thingbot_telemetrix` stays lazy + guarded regardless — with the package now
-present, a boardless machine fails in port discovery rather than at import, and
-must still degrade to mock mode instead of breaking app start.
+The licence mismatch is handled by keeping the code unmodified and recording it
+in `debian/copyright`: NEO Code stays MIT, the bundled tree stays
+AGPL-3.0-or-later. `src/neo_code/_vendor/README.md` records provenance, and
+`make vendor` replaces the copy wholesale rather than patching it.
+
+`debian/control` also carries `python3-serial` (pyserial), which is *not*
+bundled — it is a real Debian package. The import stays lazy + guarded: with the
+library now always present, a boardless machine fails in port discovery (~4 s)
+rather than at import, and must still degrade to mock mode instead of breaking
+app start.
 
 ## 8. Phasing
 
@@ -398,8 +407,8 @@ One open item remains, unblockable without hardware:
   a guess is the assignment of the three joints to indices 1/2/3. Verify against
   the board; it is a settings edit, not a code change.
 
-Distribution was the other open item and is closed — see §7. With the package
-installed, a machine with no board attached now fails during port discovery
+Distribution was the other open item and is closed — see §7. With the library
+now bundled, a machine with no board attached fails during port discovery
 (~4 s with no serial ports present, longer where ports exist) instead of at
 import. That runs on `ArmSession`'s worker thread, so the UI stays responsive
 and the chip reads *Đang kết nối…* before settling on *Chế độ mô phỏng*, with
