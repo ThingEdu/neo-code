@@ -19,6 +19,8 @@ set -euo pipefail
 # -- Configuration ------------------------------------------------------------
 REPO="ThingEdu/neo-code"
 PKG="neo-code"
+# Rebuilt from PyPI and attached to each release; see scripts/build_telemetrix_deb.sh.
+TELEMETRIX_VERSION="2.2-1"
 RAW_INSTALL_URL="https://raw.githubusercontent.com/${REPO}/main/scripts/install_on_neo.sh"
 
 # -- Parse arguments -----------------------------------------------------------
@@ -82,6 +84,11 @@ if [ "$UNINSTALL" = true ]; then
     info "Uninstalling $PKG..."
     if command -v apt-get &>/dev/null && dpkg -s "$PKG" &>/dev/null; then
         $SUDO apt-get remove -y "$PKG"
+        # Pulled in only for NEO Code, so it goes when NEO Code goes. Left in
+        # place if something else on the system depends on it.
+        if dpkg -s python3-thingbot-telemetrix &>/dev/null; then
+            $SUDO apt-get autoremove -y python3-thingbot-telemetrix || true
+        fi
     fi
     cleanup_legacy_pip_install
     info "$PKG has been uninstalled."
@@ -111,23 +118,30 @@ if [ -z "$INSTALL_VERSION" ]; then
 fi
 info "Installing $PKG $INSTALL_VERSION"
 
+RELEASE_URL="https://github.com/${REPO}/releases/download/v${INSTALL_VERSION}"
 DEB_NAME="${PKG}_${INSTALL_VERSION}_all.deb"
-DEB_URL="https://github.com/${REPO}/releases/download/v${INSTALL_VERSION}/${DEB_NAME}"
+
+# neo-code Depends on this, and it is not in the Debian archive — it is the
+# PyPI package thingbot-telemetrix, rebuilt as a .deb and attached to the same
+# release. Both are handed to apt in one call so it resolves them together.
+ARM_DEB_NAME="python3-thingbot-telemetrix_${TELEMETRIX_VERSION}_all.deb"
 
 # -- Step 2: Download and install ------------------------------------------------
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
-info "Downloading $DEB_URL"
-if ! curl -fSL --progress-bar -o "$TMP_DIR/$DEB_NAME" "$DEB_URL"; then
-    error "Download failed. Does release v${INSTALL_VERSION} exist and include ${DEB_NAME}?"
-    error "See: https://github.com/${REPO}/releases"
-    exit 1
-fi
+for deb in "$DEB_NAME" "$ARM_DEB_NAME"; do
+    info "Downloading ${RELEASE_URL}/${deb}"
+    if ! curl -fSL --progress-bar -o "$TMP_DIR/$deb" "${RELEASE_URL}/${deb}"; then
+        error "Download failed. Does release v${INSTALL_VERSION} exist and include ${deb}?"
+        error "See: https://github.com/${REPO}/releases"
+        exit 1
+    fi
+done
 
 info "Installing via apt (pulls PyQt6, Qt6 QML runtime from apt)..."
 $SUDO apt-get update -qq || true
-$SUDO apt-get install -y "$TMP_DIR/$DEB_NAME"
+$SUDO apt-get install -y "$TMP_DIR/$DEB_NAME" "$TMP_DIR/$ARM_DEB_NAME"
 
 # -- Step 3: Clean up legacy pip install and verify ------------------------------
 cleanup_legacy_pip_install

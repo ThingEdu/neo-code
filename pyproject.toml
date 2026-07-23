@@ -1,6 +1,6 @@
 [project]
 name = "neo-code"
-version = "0.7.0"
+version = "0.7.1"
 description = "Educational Python IDE for STEM & Robotics students on NEO One device"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,7 +19,7 @@ classifiers = [
 ]
 # Floor matches Debian 12 (bookworm) apt — the NEO One deployment target
 # (see debian/control and scripts/install_on_neo.sh). Qt6 comes from apt, never pip.
-dependencies = ["PyQt6>=6.4,<7"]
+dependencies = ["PyQt6>=6.4,<7", "thingbot-telemetrix>=2.2"]
 
 [project.urls]
 Homepage = "https://github.com/ThingEdu/neo-code"

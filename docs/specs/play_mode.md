@@ -320,15 +320,30 @@ exploring should be able to use `input()`, imports, everything.
 
 ## 7. Packaging
 
-`thingbot_telemetrix` (v2.1, AGPL-3.0) is **not on PyPI** — it lives at
-`/data/projects/thingbot-telemetrix`. Before Phase 3 this needs a distribution
-answer, one of: publish to PyPI, vendor into `neo_code/vendor/`, or build a
-`python3-thingbot-telemetrix` .deb shipped alongside. Note the AGPL/MIT licence
-mismatch if vendoring.
+**Resolved in 0.7.1.** `thingbot-telemetrix` 2.2 (AGPL-3.0-or-later) is now on
+PyPI, so `pyproject.toml` depends on it directly and source/venv installs need
+nothing further.
 
-Either way `debian/control` gains `python3-serial` (pyserial), and the import of
-`thingbot_telemetrix` must be lazy + guarded so a missing package degrades to
-mock mode instead of breaking app start.
+The .deb cannot use that: apt only resolves apt packages, and bookworm marks the
+system Python externally-managed, so `pip install` into it is refused outright.
+So `scripts/build_telemetrix_deb.sh` rebuilds the PyPI sdist as
+`python3-thingbot-telemetrix`, attached to the same GitHub release.
+`debian/py3dist-overrides` maps the import name onto that package so
+`${python3:Depends}` picks it up, rather than the dependency being hand-written
+into `debian/control` where it could drift from `pyproject.toml`.
+
+The upstream sdist is pyproject-only with no `setup.py`, which rules out stdeb;
+the build debianizes it over `pybuild-plugin-pyproject`, the same toolchain
+`build_deb.sh` uses.
+
+Vendoring was rejected: it would put AGPL sources inside an MIT repo and make
+updates a manual copy. Shipping it as a separate package keeps the licences at
+arm's length, which is the ordinary distro arrangement.
+
+`debian/control` also carries `python3-serial` (pyserial). The import of
+`thingbot_telemetrix` stays lazy + guarded regardless — with the package now
+present, a boardless machine fails in port discovery rather than at import, and
+must still degrade to mock mode instead of breaking app start.
 
 ## 8. Phasing
 
@@ -373,13 +388,19 @@ packages `debian/control` depends on, in simulation mode (no board attached):
 - No regressions: Sáng tạo and Học still run and print; `arm` is undefined in
   plain mode (`NameError`), so mode isolation holds.
 
-Two open items remain, both unblockable without hardware:
+One open item remains, unblockable without hardware:
 
-- **Servo numbers are unconfirmed.** `settings.json`'s `arm_servos` defaults to
-  `{yaw: 1, pitch: 2, grip: 3}`, following neo-robot's `HardwareConfig` and the
-  fact that `control_servo()` takes a servo *number* — its `RobotArm`'s 9/10/11
-  are GPIO pins and look like the stale value. Verify against the board.
-- **`thingbot_telemetrix` still has no distribution answer** (§7). Until then the
-  import fails and Chơi runs in simulation, which is the designed fallback: the
-  panel says *Chế độ mô phỏng* and the technical reason goes to stderr, not to
-  the kid's screen.
+- **Which joint is on which servo is unconfirmed.** `settings.json`'s
+  `arm_servos` defaults to `{yaw: 1, pitch: 2, grip: 3}`. The *numbering scheme*
+  is now confirmed — telemetrix 2.2's `private_constants.py` defines
+  `SERVO_1..SERVO_5 = 1..5` and `control_servo()` takes that number, so
+  neo-robot's `RobotArm` 9/10/11 were indeed GPIO pins and stale. What is still
+  a guess is the assignment of the three joints to indices 1/2/3. Verify against
+  the board; it is a settings edit, not a code change.
+
+Distribution was the other open item and is closed — see §7. With the package
+installed, a machine with no board attached now fails during port discovery
+(~4 s with no serial ports present, longer where ports exist) instead of at
+import. That runs on `ArmSession`'s worker thread, so the UI stays responsive
+and the chip reads *Đang kết nối…* before settling on *Chế độ mô phỏng*, with
+the technical reason going to stderr rather than the kid's screen.

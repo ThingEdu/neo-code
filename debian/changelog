@@ -1,3 +1,14 @@
+neo-code (0.7.1) unstable; urgency=medium
+
+  * Chơi mode drives real hardware out of the box: depend on
+    python3-thingbot-telemetrix, rebuilt from the PyPI sdist and shipped
+    alongside this package (scripts/build_telemetrix_deb.sh). Without a
+    board attached the simulated arm still takes over as before.
+  * install_on_neo.sh installs both packages in one apt call, and removes
+    the telemetrix package on --uninstall.
+
+ -- ThingEdu <everwellmax@gmail.com>  Thu, 23 Jul 2026 14:50:00 +0700
+
 neo-code (0.7.0) unstable; urgency=medium
 
   * Chơi (Play) mode: a third mode where kids drive a 3-joint ThingBot arm
