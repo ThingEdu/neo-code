@@ -9,9 +9,10 @@ License: MIT
 
 Files: src/neo_code/_vendor/thingbot_telemetrix/*
 Copyright: lgthevinh <everwellmax@gmail.com>
-Comment: Bundled verbatim from the PyPI sdist of thingbot-telemetrix 2.2
- (https://github.com/MEO-3/thingbot-telemetrix), used by Chơi mode to drive
- the robot arm. See src/neo_code/_vendor/README.md.
+Comment: Installed unmodified from PyPI (thingbot-telemetrix,
+ https://github.com/MEO-3/thingbot-telemetrix) into this package at build time,
+ because apt cannot resolve a PyPI dependency. Used by Chơi mode to drive the
+ robot arm. See src/neo_code/_vendor/README.md.
 License: AGPL-3.0-or-later
 
 License: AGPL-3.0-or-later

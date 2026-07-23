@@ -7,3 +7,7 @@ dist/
 *.egg-info/
 
 .vscode/
+# Filled by scripts/build_deb.sh at build time; see src/neo_code/_vendor/README.md
+/src/neo_code/_vendor/*
+!/src/neo_code/_vendor/__init__.py
+!/src/neo_code/_vendor/README.md

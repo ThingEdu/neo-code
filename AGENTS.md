@@ -64,12 +64,16 @@ PyQt6 + the Qt6 QML runtime per-architecture. **There is no in-app updater** —
 updates go through the install script. Any new Qt6 QML module a feature needs must
 be added to `debian/control` (e.g. `qml6-module-qtquick-dialogs`).
 
-Chơi mode's `thingbot-telemetrix` is **bundled** in `src/neo_code/_vendor/`, not
-depended on: a `.deb` cannot pull from PyPI, and bookworm refuses `pip` into the
-system Python. Because it is inside the Python package, the wheel and the `.deb`
-built from it carry it automatically — nothing extra to ship. Refresh it with
-`make vendor`; see `src/neo_code/_vendor/README.md` for why it keeps its own
-top-level name and how `backends.py` imports it.
+Chơi mode's `thingbot-telemetrix` is an ordinary PyPI dependency in
+`pyproject.toml`, but apt resolves only apt packages and Debian has no
+`python3-thingbot-telemetrix` — so `build_deb.sh` installs it into
+`src/neo_code/_vendor/` with `pip install --target` before building. That
+directory is empty in git and gitignored; nothing third-party is committed.
+Bump `TELEMETRIX_VERSION` there and the floor in `pyproject.toml` together.
+`--target` is load-bearing: bookworm refuses `pip` installs *into* the system
+Python, but a plain directory is fine. See `src/neo_code/_vendor/README.md`
+for why the library keeps its own top-level name and how `backends.py`
+prefers a real installation over the embedded copy.
 
 ## Architecture
 

@@ -1,10 +1,11 @@
 neo-code (0.7.1) unstable; urgency=medium
 
-  * Chơi mode drives real hardware out of the box: thingbot-telemetrix 2.2
-    is bundled into the package (src/neo_code/_vendor/), so a single .deb
-    is all there is to install. A copy already installed on the system
-    takes precedence over the bundled one. Without a board attached the
-    simulated arm still takes over as before.
+  * Chơi mode drives real hardware out of the box: thingbot-telemetrix is
+    now a dependency, and since apt cannot resolve a PyPI package, the
+    build installs it into the package with pip --target. A single .deb is
+    still all there is to install. A copy already installed on the system
+    takes precedence. Without a board attached the simulated arm still
+    takes over as before.
 
  -- ThingEdu <everwellmax@gmail.com>  Thu, 23 Jul 2026 15:20:00 +0700
 

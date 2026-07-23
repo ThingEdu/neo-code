@@ -1,39 +1,38 @@
 # Bundled third-party code
 
-Nothing here is NEO Code's own work. Don't edit these files — changes are lost
-on the next update, which is a wholesale replacement, not a patch.
+**This directory is empty in git.** `scripts/build_deb.sh` fills it at build time
+with `pip install --target`, so the `.deb` carries the libraries below while the
+repo stays free of third-party source. Nothing here is NEO Code's own work, and
+nothing here should be committed.
 
-## thingbot_telemetrix 2.2
+## thingbot_telemetrix
 
-- Upstream: <https://github.com/MEO-3/thingbot-telemetrix>, also on PyPI as
-  `thingbot-telemetrix`
-- Licence: **AGPL-3.0-or-later** (NEO Code itself is MIT — see
-  `debian/copyright`, which records both)
+- Upstream: PyPI `thingbot-telemetrix` (<https://github.com/MEO-3/thingbot-telemetrix>)
+- Version: pinned by `TELEMETRIX_VERSION` in `scripts/build_deb.sh`
+- Licence: **AGPL-3.0-or-later** (NEO Code itself is MIT — `debian/copyright`
+  records both)
 - Used by: `features/arm/backends.py`, to drive the robot arm in Chơi mode
 
-Copied verbatim from the PyPI sdist, no local modifications.
+To move to a new version, bump `TELEMETRIX_VERSION` in `scripts/build_deb.sh` and
+the floor in `pyproject.toml`, then test Chơi mode against a real board — none of
+this is covered by tests.
 
-### Why it is bundled rather than depended on
+## Why a .deb needs this at all
 
-The NEO One installs NEO Code as a `.deb`. apt resolves only apt packages, and
-Debian bookworm marks the system Python externally-managed, so `pip install`
-into it is refused — a `.deb` therefore has no way to pull this from PyPI at
-install time. Bundling it in the Python package means the wheel, and so the
-`.deb` built from it, already contains it: one artifact, one install, and the
-same code on a dev machine as on the device.
+Everywhere else `thingbot-telemetrix` is an ordinary PyPI dependency:
+`pip install .` resolves it and this directory is never used. But apt resolves
+only apt packages, and there is no `python3-thingbot-telemetrix` in Debian — so
+the `.deb` has to carry its own copy.
 
-It keeps its own top-level name here instead of being imported as
-`neo_code._vendor.thingbot_telemetrix`, because it imports itself absolutely
-(`from thingbot_telemetrix.transport import ...`) and a rename would break it.
+`pip install --target` is what makes that legal: bookworm marks the system Python
+externally-managed and refuses installs *into it*, but installing into a plain
+directory is fine.
 
-`pyserial` is *not* bundled — it is `python3-serial` in apt and a normal
-dependency everywhere else.
+## Why the libraries keep their own names
 
-### Updating
-
-```bash
-bash scripts/vendor_telemetrix.sh 2.3
-```
-
-Then run Chơi mode against a board before releasing; nothing here is covered by
-tests.
+They are imported as `thingbot_telemetrix`, not
+`neo_code._vendor.thingbot_telemetrix` — the library imports itself absolutely
+(`from thingbot_telemetrix.transport import ...`), which a rename would break.
+`backends._telemetrix_class()` tries the plain import first, so a real
+installation always wins, and only falls back to putting this directory on
+`sys.path`.

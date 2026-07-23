@@ -320,39 +320,44 @@ exploring should be able to use `input()`, imports, everything.
 
 ## 7. Packaging
 
-**Resolved in 0.7.1.** `thingbot-telemetrix` 2.2 (AGPL-3.0-or-later) is bundled
-into the Python package at `src/neo_code/_vendor/`, so the wheel — and the .deb
-built from it — already carry it. One artifact, nothing extra to install.
+**Resolved in 0.7.1.** `thingbot-telemetrix` 2.2 (AGPL-3.0-or-later) is a normal
+PyPI dependency in `pyproject.toml`. `pip install .` resolves it like any other,
+and that is the whole story off the device.
 
-A dependency would not have worked. apt resolves only apt packages, and bookworm
-marks the system Python externally-managed, so a .deb has no way to pull from
-PyPI at install time. Both alternatives were built and rejected: a second
-`python3-thingbot-telemetrix` .deb (shipped briefly in 0.7.1) put a second
-artifact in front of anyone installing by hand, and pip with
-`--break-system-packages` writes into a Python Debian says not to write into,
-where apt cannot track it.
+The .deb is the exception: apt resolves only apt packages, and Debian has no
+`python3-thingbot-telemetrix`. So `build_deb.sh` runs one `pip install --target
+src/neo_code/_vendor --no-deps` before `dpkg-buildpackage`, and the package
+carries its own copy. `--target` is what makes that legal — bookworm marks the
+system Python externally-managed and refuses installs *into it*, but installing
+into a plain directory is allowed. `--no-deps` because pyserial is
+`python3-serial` in `debian/control`, a real apt package.
 
-Bundling in the *Python* build rather than in `build_deb.sh` is what keeps this
-cheap: setuptools picks the directory up on its own, so a plain `pip install .`
-and the .deb end up with identical code, and there is no packaging-only branch
-to keep working.
+Three heavier alternatives were built and discarded, in order:
 
-It keeps its own top-level name under `_vendor/` instead of becoming
-`neo_code._vendor.thingbot_telemetrix`, because the library imports itself
-absolutely (`from thingbot_telemetrix.transport import ...`) and a rename breaks
-it. `backends._telemetrix_class()` tries the plain import first — a real
+- a second `python3-thingbot-telemetrix` .deb (briefly shipped in 0.7.1) — put a
+  second artifact in front of anyone installing by hand;
+- committing the source under `_vendor/` — put AGPL files in an MIT repo and
+  made updates a manual copy;
+- `pip --break-system-packages` in the installer — writes where Debian says not
+  to and apt cannot track it.
+
+The pip line replaced all of them: PyPI stays the single source of the code, the
+repo stays free of third-party source, and the version is pinned in one place
+(`TELEMETRIX_VERSION`, kept in step with the floor in `pyproject.toml`).
+
+The library keeps its own top-level name under `_vendor/` instead of becoming
+`neo_code._vendor.thingbot_telemetrix`, because it imports itself absolutely
+(`from thingbot_telemetrix.transport import ...`) and a rename breaks it.
+`backends._telemetrix_class()` tries the plain import first — a real
 installation always wins — and only then puts `_vendor/` on `sys.path`.
 
-The licence mismatch is handled by keeping the code unmodified and recording it
-in `debian/copyright`: NEO Code stays MIT, the bundled tree stays
-AGPL-3.0-or-later. `src/neo_code/_vendor/README.md` records provenance, and
-`make vendor` replaces the copy wholesale rather than patching it.
+Licences stay recorded rather than blurred: NEO Code is MIT, the embedded tree
+is AGPL-3.0-or-later, both stated in `debian/copyright`, and the code ships
+unmodified.
 
-`debian/control` also carries `python3-serial` (pyserial), which is *not*
-bundled — it is a real Debian package. The import stays lazy + guarded: with the
-library now always present, a boardless machine fails in port discovery (~4 s)
-rather than at import, and must still degrade to mock mode instead of breaking
-app start.
+The import stays lazy + guarded: with the library now always present in the
+.deb, a boardless machine fails in port discovery (~4 s) rather than at import,
+and must still degrade to mock mode instead of breaking app start.
 
 ## 8. Phasing
 

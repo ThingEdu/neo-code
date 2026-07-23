@@ -1,4 +1,4 @@
-.PHONY: install dev run lint format build deb vendor clean
+.PHONY: install dev run lint format build deb clean
 
 install:
 	pip install -e .
@@ -22,10 +22,6 @@ build:
 
 deb:
 	bash scripts/build_deb.sh
-
-# Refresh the bundled thingbot-telemetrix; see src/neo_code/_vendor/README.md.
-vendor:
-	bash scripts/vendor_telemetrix.sh
 
 clean:
 	rm -rf build dist *.egg-info
