@@ -33,9 +33,10 @@ Item {
             text: "# NEO Code\nfor i in range(3):\n    print(\"Xin chào\", i)\n"
         }
 
-        Common.TerminalPanel {
+        Common.ResultConsole {
             SplitView.preferredWidth: 380
             SplitView.minimumWidth: 220
+            showStatusLines: true
         }
     }
 

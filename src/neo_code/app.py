@@ -23,6 +23,7 @@ from neo_code.ui.controllers.editor_bridge import EditorBridge
 from neo_code.ui.controllers.execution_controller import ExecutionController
 from neo_code.ui.controllers.file_controller import FileController
 from neo_code.ui.controllers.lessons_controller import LessonsController
+from neo_code.ui.controllers.play_controller import PlayController
 from neo_code.ui.controllers.repl_controller import ReplController
 from neo_code.ui.controllers.settings_controller import SettingsController
 from neo_code.ui.qml_loader import main_qml_path
@@ -58,6 +59,10 @@ class NeoCodeApp:
         self._settings = SettingsController()
         self._repl = ReplController()
         self._lessons = LessonsController()
+        self._play = PlayController()
+        # A leaked serial connection stays in telemetrix's port register and
+        # blocks the next one, so the arm is released on the way out.
+        self._app.aboutToQuit.connect(self._play.shutdown)
 
         self._engine = QQmlApplicationEngine()
         ctx = self._engine.rootContext()
@@ -72,6 +77,7 @@ class NeoCodeApp:
         ctx.setContextProperty("settings", self._settings)
         ctx.setContextProperty("replController", self._repl)
         ctx.setContextProperty("lessonsController", self._lessons)
+        ctx.setContextProperty("playController", self._play)
 
         self._engine.load(QUrl.fromLocalFile(str(main_qml_path())))
         if not self._engine.rootObjects():

@@ -18,6 +18,7 @@ Rectangle {
     property bool replActive: false
     property bool homeMode: false
     property bool learnMode: false
+    property bool playMode: false
 
     signal backRequested()
     signal newRequested()
@@ -80,11 +81,14 @@ Rectangle {
 
         Rectangle { visible: !bar.homeMode; Layout.preferredWidth: 1; Layout.preferredHeight: 26; color: Theme.terminal_border }
 
+        // Run is disabled while a Chơi REPL is live: both sessions mirror the
+        // arm's angles independently, and two writers would let those mirrors
+        // disagree with where the arm actually is.
         AppButton {
             visible: !bar.homeMode
             variant: "primary"; iconName: "play"
-            enabled: !bar.running
-            tooltip: "Chạy"
+            enabled: !bar.running && !(bar.playMode && bar.replActive)
+            tooltip: bar.playMode && bar.replActive ? "Tắt REPL để chạy chương trình" : "Chạy"
             onClicked: bar.runRequested()
         }
         AppButton {

@@ -1,6 +1,6 @@
 // Home — mode-select landing screen shown before the IDE canvas.
-// "Sáng tạo" (Create) and "Học" (Learn) are implemented; "Chơi" (robot) is
-// being migrated to a separate app (see AGENTS.md) and shows as coming soon.
+// All three modes are implemented: "Chơi" (robot arm), "Học" (curriculum) and
+// "Sáng tạo" (free coding). The "Sắp ra mắt" badge stays for future cards.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -17,6 +17,7 @@ Rectangle {
 
     signal createRequested()
     signal learnRequested()
+    signal playRequested()
 
     component ModeCard: Button {
         id: card
@@ -40,6 +41,7 @@ Rectangle {
         onClicked: {
             if (!card.available) return
             if (card.targetMode === "learn") home.learnRequested()
+            else if (card.targetMode === "play") home.playRequested()
             else home.createRequested()
         }
 
@@ -143,13 +145,14 @@ Rectangle {
 
         ModeCard {
             modeTitle: "Chơi"
-            modeSub: "Khám phá và điều khiển robot"
-            iconName: "play"
+            modeSub: "Khám phá và điều khiển cánh tay robot"
+            iconName: "robot_industrial"
             bgColor: Theme.secondary
             fgColor: Theme.secondary_text
             badgeBg: Qt.rgba(1, 1, 1, 0.28)
             iconBg: Qt.rgba(1, 1, 1, 0.28)
-            available: false
+            available: true
+            targetMode: "play"
         }
         ModeCard {
             modeTitle: "Học"

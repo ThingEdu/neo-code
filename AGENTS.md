@@ -8,8 +8,12 @@ NEO Code is an educational Python IDE (**PyQt6 + QML**) for STEM/Robotics studen
 aged 6–12, shipped to low-resource Armbian/ARM devices ("Neo One", 2 GB RAM). All
 user-facing UI strings are **Vietnamese** — keep new strings in Vietnamese to match.
 
-Architecture reference: [`docs/specs/architecture.md`](docs/specs/architecture.md).
-Migration history: [`docs/specs/qt6_migration.md`](docs/specs/qt6_migration.md).
+Three modes, chosen from the home screen: **Chơi** (drive a robot arm), **Học**
+(curriculum lessons), **Sáng tạo** (free coding). Chơi's design is written up in
+[`docs/specs/play_mode.md`](docs/specs/play_mode.md).
+
+Note: `docs/specs/architecture.md` and `qt6_migration.md` are referenced in older
+notes but do not exist in this repo — this file is the architecture reference.
 
 ## Commands
 
@@ -35,9 +39,19 @@ Shortcuts: F5 run, F6 stop, F9 REPL toggle, Ctrl+N/O/S file ops.
 ### Verifying UI changes
 
 The UI is QML. To verify a change renders on the **actual target** (Qt 6.4), run it
-headless in a Debian bookworm container and grab a screenshot — this is how the
-whole migration was validated (see `docs/specs/qt6_migration.md`). Loading QML on a
+headless in a Debian bookworm container and grab a screenshot. Loading QML on a
 newer host Qt is not sufficient; bookworm ships Qt 6.4.2.
+
+```bash
+# image: bookworm + the same Qt6/QML packages debian/control depends on
+docker run --rm -v "$PWD/src":/app/src:ro -v /tmp/out:/out \
+  -e PYTHONPATH=/app/src -e QT_QPA_PLATFORM=offscreen <image> python3 /out/shot.py play /out/play.png
+```
+
+where `shot.py` loads `NeoCodeApp`, sets `mode` on the root object, and saves
+`root.grabWindow()` on a timer. Chơi mode falls back to a simulated arm when no
+board is attached, so every mode is screenshot- and function-testable with no
+hardware.
 
 ### Releasing
 
@@ -68,10 +82,15 @@ controllers, exposes them via `setContextProperty` (plus the palette as `Theme` 
 
 **Adding a feature:** put Qt-clean logic in `features/<name>/`, add a
 `ui/controllers/<name>_controller.py` QObject, register it in `app.py` via
-`setContextProperty`, and add `ui/qml/components/<Name>Panel.qml`. `MainWindow.qml`
-is currently a single-pane canvas (toolbar → editor/terminal or REPL → status bar)
-with no sidebar or nav shell — a feature panel needs its own host/toggle mechanism
-in `MainWindow.qml` since none exists to plug into.
+`setContextProperty`, and add `ui/qml/components/<name>/*.qml`. `MainWindow.qml`
+is a toolbar plus one visible view per `mode` (`home`/`create`/`learn`/`play`);
+a new mode means a `views/<Name>View.qml`, a `HomeView` card, and a branch in
+`currentText()`/`currentMode()`.
+
+All three IDE modes render program output through
+`components/common/ResultConsole.qml` — header, scrollback, the input row that
+answers `input()`, and the `signalBus` wiring. Do not hand-roll a fourth copy;
+that duplication is what let the panels drift apart before.
 
 Colors are never hardcoded — reference `Theme.<token>` in QML (backed by
 `theme/colors.py`; add the token there). Persistent state lives in
@@ -79,18 +98,33 @@ Colors are never hardcoded — reference `Theme.<token>` in QML (backed by
 
 ### Execution flow
 
-`ToolBar` Run → `ExecutionController.run(code)` → `event_bus.execution_requested`
+`ToolBar` Run → `ExecutionController.run(code, mode)` → `event_bus.execution_requested`
 → `runner.py` writes a temp script via `proxy_injector.prepare_script()`, runs it
 with `QProcess(sys.executable, ["-X","utf8","-u", tmp])`, hard-kills at 30 s, deletes
 the temp file. stdout goes line-by-line through `output_parser.parse_line()` →
 `event_bus.stdout_received`; stderr is emitted raw. Both reach QML through
 `SignalBusBridge`.
 
+`mode` is `"plain"` or `"arm"`. `"arm"` (Chơi) runs the script through
+`-m neo_code.execution.play_bootstrap`, which injects an `arm` object with runpy.
+**Never prepend a preamble to student code** to achieve this — a preamble shifts
+every line, and tracebacks then point at the wrong line in the kid's editor. That
+bug is why `prepare_script` writes the file verbatim.
+
+Both child processes get their environment from `execution/child_env.py` (UTF-8,
+an importable `neo_code`, and the arm pose in Chơi mode); keep them in step there
+rather than in each caller.
+
 ## Notes
 
-- The curriculum (lessons) and robot features were removed from this app; they are
-  being migrated to a separate UI. `features/` has no feature modules right now —
-  only the empty package placeholder. Do not re-add lesson/robot code here.
+- Chơi mode's arm never opens the serial port from the student's subprocess — the
+  main process holds it and the subprocess proxies commands over stdout with a
+  `\x1e@@ARM ` prefix. See `docs/specs/play_mode.md` §4 for why; the short version
+  is that reconnecting per Run costs ~14 s of port scanning.
+- QML change handlers are **not** ordered against re-evaluation of bindings derived
+  from the same property. `onModeChanged` in `MainWindow.qml` tests `mode` directly
+  rather than the `playActive` binding for exactly this reason — the derived value
+  can still read stale inside the handler.
 
 - The editor uses a QML `TextArea` with the Python `PythonHighlighter`
   (`ui/controllers/editor_bridge.py`) attached to its `QTextDocument`; the

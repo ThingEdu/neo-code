@@ -13,6 +13,11 @@ _DEFAULTS: dict = {
     "font_size": 18,
     "tab_width": 4,
     "last_open_dir": str(Path.home()),
+    # Chơi mode. These are ThingBot *servo numbers*, not GPIO pins —
+    # control_servo() addresses servos by index on the board.
+    "arm_servos": {"yaw": 1, "pitch": 2, "grip": 3},
+    "arm_port": None,      # None = auto-detect; set to e.g. "/dev/ttyACM0" to pin it
+    "arm_mock": False,     # True forces simulation even with a board attached
 }
 
 
@@ -64,6 +69,19 @@ class Settings:
     @last_open_dir.setter
     def last_open_dir(self, value: str) -> None:
         self._data["last_open_dir"] = value
+
+    @property
+    def arm_servos(self) -> dict:
+        stored = self._data.get("arm_servos") or {}
+        return {**_DEFAULTS["arm_servos"], **stored}
+
+    @property
+    def arm_port(self) -> str | None:
+        return self._data.get("arm_port") or None
+
+    @property
+    def arm_mock(self) -> bool:
+        return bool(self._data.get("arm_mock", False))
 
     def get(self, key: str, default=None):
         return self._data.get(key, default)

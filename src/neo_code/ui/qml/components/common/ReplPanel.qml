@@ -15,6 +15,7 @@ Rectangle {
     property alias maxLines: out.maxLines
 
     function append(text, kind) { out.append(text, kind) }
+    function insertAtInput(text) { out.insertAtInput(text) }
 
     ColumnLayout {
         anchors.fill: parent

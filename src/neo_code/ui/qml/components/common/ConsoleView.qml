@@ -1,6 +1,6 @@
 // Shared console surface: bounded scrollback, colour-coded lines, an optional
-// input row. TerminalPanel, ReplPanel and LessonConsole all render through this
-// — wrapping and scrollback live here so the three cannot drift apart again.
+// input row. ResultConsole and ReplPanel both render through this — wrapping
+// and scrollback live here so the two cannot drift apart again.
 //
 // Prompt handling: a program that calls input() writes its prompt with no
 // trailing newline, so the runner reports it via appendPartial(). That line
@@ -52,6 +52,14 @@ Item {
 
     function clear() { lines.clear(); _partialIndex = -1 }
     function focusInput() { if (showInput) input.forceActiveFocus() }
+
+    // Tap-to-insert, for panels that offer snippets while the input row is the
+    // thing being typed into (Chơi's API reference in REPL mode).
+    function insertAtInput(text) {
+        if (!showInput) return
+        input.insert(input.cursorPosition, text)
+        input.forceActiveFocus()
+    }
 
     function _emit(text, kind) {
         if (_partialIndex >= 0) {

@@ -25,12 +25,20 @@ class EventBus(QObject):
     file_saved = pyqtSignal(str)                # (path,)
 
     # ── Execution ──────────────────────────────────────────────────────────
-    execution_requested = pyqtSignal(str)       # (code,)
+    # mode is "plain" or "arm"; "arm" runs the script through play_bootstrap so
+    # Chơi code gets an `arm` object (see execution/runner.py).
+    execution_requested = pyqtSignal(str, str)  # (code, mode)
     execution_stop_requested = pyqtSignal()
     execution_started = pyqtSignal()
     execution_finished = pyqtSignal(int)        # (exit_code,)
     execution_input_submitted = pyqtSignal(str)  # (line,) — typed answer for input()
-    repl_mode_changed = pyqtSignal(bool)        # True = REPL active, False = script mode
+    repl_mode_changed = pyqtSignal(bool, str)   # (active, mode) — mode as above
+
+    # ── Robotic arm (Chơi mode) ────────────────────────────────────────────
+    # One protocol line from the student's subprocess, for ArmSession to apply.
+    arm_command = pyqtSignal(str)               # (line,)
+    # Applied state, so the runner can seed the next program's mirror.
+    arm_state_changed = pyqtSignal(int, int, bool)  # (yaw, pitch, grabbed)
 
     # ── Subprocess output ──────────────────────────────────────────────────
     stdout_received = pyqtSignal(str)           # (text,) — one complete line

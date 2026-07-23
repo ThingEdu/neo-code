@@ -5,7 +5,7 @@ Uses QProcess so stdout/stderr callbacks arrive on the Qt event loop —
 no manual threading or GLib.idle_add() needed.
 
 Listens to:
-  event_bus.execution_requested       (code: str)
+  event_bus.execution_requested       (code: str, mode: str)
   event_bus.execution_stop_requested
   event_bus.execution_input_submitted (line: str)  — written to the child's stdin
 
@@ -15,17 +15,22 @@ Emits:
   event_bus.stdout_received      (text: str)      — one complete line, via output_parser
   event_bus.stdout_partial       (text: str)      — unterminated line, i.e. an input() prompt
   event_bus.stderr_received      (text: str)
+
+Two modes. "plain" runs the student's file directly; "arm" (Chơi) runs it
+through play_bootstrap, which injects `arm` without touching the file, so
+traceback line numbers still match the editor.
 """
 
 import sys
 import os
 from pathlib import Path
 
-from PyQt6.QtCore import QObject, QProcess, QProcessEnvironment, QTimer, pyqtSlot
+from PyQt6.QtCore import QObject, QProcess, QTimer, pyqtSlot
 
 from neo_code.core.event_bus import event_bus
 from neo_code.execution.proxy_injector import prepare_script
-from neo_code.execution import output_parser
+from neo_code.execution import child_env, output_parser
+from neo_code.features.arm import protocol
 
 # Cap on time the script spends *running*. The clock pauses while the script is
 # blocked on input() — otherwise a child typing an answer gets killed mid-word.
@@ -63,8 +68,8 @@ class Runner(QObject):
 
     # ── Slots ─────────────────────────────────────────────────────────────────
 
-    @pyqtSlot(str)
-    def _on_execution_requested(self, code: str) -> None:
+    @pyqtSlot(str, str)
+    def _on_execution_requested(self, code: str, mode: str) -> None:
         if self._process and self._process.state() != QProcess.ProcessState.NotRunning:
             return  # already running
 
@@ -73,16 +78,18 @@ class Runner(QObject):
 
         self._process = QProcess(self)
         self._process.setProcessChannelMode(QProcess.ProcessChannelMode.SeparateChannels)
-        env = QProcessEnvironment.systemEnvironment()
-        env.insert("PYTHONIOENCODING", "utf-8")
-        env.insert("PYTHONUTF8", "1")
-        self._process.setProcessEnvironment(env)
+        self._process.setProcessEnvironment(child_env.build(mode))
         self._process.readyReadStandardOutput.connect(self._on_stdout)
         self._process.readyReadStandardError.connect(self._on_stderr)
         self._process.finished.connect(self._on_finished)
 
+        args = ["-X", "utf8", "-u"]
+        if mode == "arm":
+            args += ["-m", "neo_code.execution.play_bootstrap"]
+        args.append(str(self._tmp_script))
+
         event_bus.execution_started.emit()
-        self._process.start(sys.executable, ["-X", "utf8", "-u", str(self._tmp_script)])
+        self._process.start(sys.executable, args)
 
         self._timeout_remaining = _TIMEOUT_MS
         self._timeout_timer.start(_TIMEOUT_MS)
@@ -131,6 +138,10 @@ class Runner(QObject):
     def _flush_partial(self) -> None:
         """Nothing more arrived — show the unterminated line as a prompt."""
         if self._process is None or not self._out_buf:
+            return
+        # A half-written arm command is not a prompt; showing it would flash
+        # protocol noise at the kid. Its newline is always right behind it.
+        if protocol.PREFIX in self._out_buf:
             return
         event_bus.stdout_partial.emit(self._out_buf)
         # It has stopped producing output mid-line; assume it is blocked on

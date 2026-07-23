@@ -25,7 +25,8 @@ Depends: ${misc:Depends},
  qml6-module-qtquick-window,
  qml6-module-qtquick-templates,
  qml6-module-qtquick-dialogs,
- qml6-module-qtqml-workerscript
+ qml6-module-qtqml-workerscript,
+ python3-serial
 Recommends: qt6-wayland
 Description: Educational Python IDE for kids (NEO One / STEM & Robotics)
  NEO Code is an open-source Python IDE designed for STEM and Robotics

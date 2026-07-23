@@ -1,6 +1,7 @@
-// NEO Code — main window. Toolbar + one of three views: home (mode select),
-// Sáng tạo (editor/terminal or REPL), or Học (curriculum sidebar + editor +
-// Expected/Result console). Qt 6.4-compatible.
+// NEO Code — main window. Toolbar + one of four views: home (mode select),
+// Sáng tạo (editor/terminal or REPL), Học (curriculum sidebar + editor +
+// Expected/Result console), or Chơi (arm panel + editor/REPL + arm status +
+// console). Qt 6.4-compatible.
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -18,9 +19,36 @@ ApplicationWindow {
     color: Theme.background
 
     property bool replActive: false
-    property string mode: "home"   // home | create | learn
+    property string mode: "home"   // home | create | learn | play
     readonly property bool homeActive: root.mode === "home"
     readonly property bool learnActive: root.mode === "learn"
+    readonly property bool playActive: root.mode === "play"
+
+    // Which editor the toolbar's Save/Run act on. A three-way ternary at every
+    // call site was unreadable once Chơi arrived.
+    function currentText() {
+        if (root.learnActive) return learnView.currentText
+        if (root.playActive) return playView.currentText
+        return createView.currentText
+    }
+
+    // Chơi runs code through play_bootstrap so scripts get an `arm` object.
+    function currentMode() { return root.playActive ? "arm" : "plain" }
+
+    // A REPL is bound to the mode that started it — its namespace, and whether
+    // it holds an `arm`, are both fixed at launch. Rather than reason about a
+    // session outliving its mode, end it at the boundary.
+    //
+    // Tests `mode` directly, not the `playActive` binding: a change handler is
+    // not ordered against the re-evaluation of bindings that derive from the
+    // same property, so `playActive` can still read false in here.
+    onModeChanged: {
+        if (root.replActive) {
+            root.replActive = false
+            execution.setReplMode(false, "plain")
+        }
+        if (root.mode === "play") playController.open()
+    }
 
     // ── File dialogs (QtQuick.Dialogs) ─────────────────────────────────────
     FileDialog {
@@ -37,7 +65,7 @@ ApplicationWindow {
         fileMode: FileDialog.SaveFile
         nameFilters: ["Tệp Python (*.py)", "Tất cả tệp (*)"]
         currentFolder: files.lastOpenFolder
-        onAccepted: files.saveAs(selectedFile, root.learnActive ? learnView.currentText : createView.currentText)
+        onAccepted: files.saveAs(selectedFile, root.currentText())
     }
 
     Common.SettingsDialog {
@@ -58,15 +86,19 @@ ApplicationWindow {
             Layout.margins: Theme.space_sm
             homeMode: root.homeActive
             learnMode: root.learnActive
+            playMode: root.playActive
             running: execution.running
             replActive: root.replActive
             onBackRequested: root.mode = "home"
             onNewRequested: files.newFile()
             onOpenRequested: openDialog.open()
-            onSaveRequested: files.hasFile ? files.save(root.learnActive ? learnView.currentText : createView.currentText) : saveDialog.open()
-            onRunRequested: execution.run(root.learnActive ? learnView.currentText : createView.currentText)
+            onSaveRequested: files.hasFile ? files.save(root.currentText()) : saveDialog.open()
+            onRunRequested: execution.run(root.currentText(), root.currentMode())
             onStopRequested: execution.stop()
-            onReplToggled: function(active) { root.replActive = active; execution.setReplMode(active) }
+            onReplToggled: function(active) {
+                root.replActive = active
+                execution.setReplMode(active, root.currentMode())
+            }
             onSettingsRequested: settingsDialog.open()
         }
 
@@ -81,6 +113,7 @@ ApplicationWindow {
             visible: root.homeActive
             onCreateRequested: root.mode = "create"
             onLearnRequested: root.mode = "learn"
+            onPlayRequested: root.mode = "play"
         }
 
         V.CreateView {
@@ -104,6 +137,17 @@ ApplicationWindow {
             Layout.rightMargin: Theme.space_sm
             Layout.bottomMargin: Theme.space_sm
             visible: root.mode === "learn"
+        }
+
+        V.PlayView {
+            id: playView
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.leftMargin: Theme.space_sm
+            Layout.rightMargin: Theme.space_sm
+            Layout.bottomMargin: Theme.space_sm
+            visible: root.playActive
+            replActive: root.replActive
         }
     }
 }

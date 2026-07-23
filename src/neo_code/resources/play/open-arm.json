@@ -1,0 +1,90 @@
+{
+    "id": "open-arm",
+    "title": "Cánh tay robot",
+    "instruction": "Viết code rồi nhấn ▶ để điều khiển cánh tay. Nhấn vào một lệnh bên dưới để chèn vào chỗ đang gõ.",
+    "api": [
+        {
+            "group": "Xoay",
+            "entries": [
+                {
+                    "method": "turn_left",
+                    "label": "arm.turn_left(30)",
+                    "doc": "Xoay cánh tay sang trái 30 độ",
+                    "insert": "arm.turn_left(30)\n",
+                    "kind": "builtin"
+                },
+                {
+                    "method": "turn_right",
+                    "label": "arm.turn_right(30)",
+                    "doc": "Xoay cánh tay sang phải 30 độ",
+                    "insert": "arm.turn_right(30)\n",
+                    "kind": "builtin"
+                },
+                {
+                    "method": "set_yaw",
+                    "label": "arm.set_yaw(90)",
+                    "doc": "Đặt góc xoay, từ 0 đến 180",
+                    "insert": "arm.set_yaw(90)\n",
+                    "kind": "builtin"
+                }
+            ]
+        },
+        {
+            "group": "Nâng hạ",
+            "entries": [
+                {
+                    "method": "lift_up",
+                    "label": "arm.lift_up(30)",
+                    "doc": "Nâng cánh tay lên 30 độ",
+                    "insert": "arm.lift_up(30)\n",
+                    "kind": "builtin"
+                },
+                {
+                    "method": "lower_down",
+                    "label": "arm.lower_down(30)",
+                    "doc": "Hạ cánh tay xuống 30 độ",
+                    "insert": "arm.lower_down(30)\n",
+                    "kind": "builtin"
+                },
+                {
+                    "method": "set_pitch",
+                    "label": "arm.set_pitch(90)",
+                    "doc": "Đặt góc nâng hạ, từ 0 đến 180",
+                    "insert": "arm.set_pitch(90)\n",
+                    "kind": "builtin"
+                }
+            ]
+        },
+        {
+            "group": "Kẹp",
+            "entries": [
+                {
+                    "method": "grab",
+                    "label": "arm.grab()",
+                    "doc": "Kẹp vật lại",
+                    "insert": "arm.grab()\n",
+                    "kind": "builtin"
+                },
+                {
+                    "method": "release",
+                    "label": "arm.release()",
+                    "doc": "Thả vật ra",
+                    "insert": "arm.release()\n",
+                    "kind": "builtin"
+                }
+            ]
+        },
+        {
+            "group": "Thời gian",
+            "entries": [
+                {
+                    "method": "delay",
+                    "label": "arm.delay(1)",
+                    "doc": "Dừng lại 1 giây rồi làm tiếp",
+                    "insert": "arm.delay(1)\n",
+                    "kind": "builtin"
+                }
+            ]
+        }
+    ]
+}

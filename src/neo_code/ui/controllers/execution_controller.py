@@ -32,9 +32,11 @@ class ExecutionController(QObject):
         self.runningChanged.emit()
 
     @pyqtSlot(str)
-    def run(self, code: str) -> None:
+    @pyqtSlot(str, str)
+    def run(self, code: str, mode: str = "plain") -> None:
+        """Run *code*; mode "arm" (Chơi) also gives the script an `arm` object."""
         if not self._running:
-            event_bus.execution_requested.emit(code)
+            event_bus.execution_requested.emit(code, mode)
 
     @pyqtSlot()
     def stop(self) -> None:
@@ -47,5 +49,6 @@ class ExecutionController(QObject):
             event_bus.execution_input_submitted.emit(text)
 
     @pyqtSlot(bool)
-    def setReplMode(self, active: bool) -> None:
-        event_bus.repl_mode_changed.emit(active)
+    @pyqtSlot(bool, str)
+    def setReplMode(self, active: bool, mode: str = "plain") -> None:
+        event_bus.repl_mode_changed.emit(active, mode)

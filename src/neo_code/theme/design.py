@@ -96,6 +96,17 @@ _MDI_CODEPOINTS = {
     "call_split": 0xF00FB,       # call-split         → topic: Điều kiện
     "repeat": 0xF0456,          # repeat             → topic: Vòng lặp
     "format_list_bulleted": 0xF0279,  # format-list-bulleted → topic: Danh sách
+    # ── Chơi mode ─────────────────────────────────────────────────────────
+    "robot_industrial": 0xF0B46,  # robot-industrial   → home: "Chơi" mode, arm panel
+    "rotate_left": 0xF0465,      # rotate-left        → yaw
+    "rotate_right": 0xF0467,      # rotate-right       → yaw
+    "arrow_up_bold": 0xF0737,     # arrow-up-bold      → pitch
+    "arrow_down_bold": 0xF072E,   # arrow-down-bold    → pitch
+    "hand_back_left": 0xF0E46,    # hand-back-left     → gripper
+    "timer_outline": 0xF051B,     # timer-outline      → arm.delay()
+    "lan_connect": 0xF0318,       # lan-connect        → arm connected
+    "lan_disconnect": 0xF0319,    # lan-disconnect     → arm in simulation
+    "lan_pending": 0xF031A,       # lan-pending        → arm connecting
 }
 
 # name → glyph character, for the `Mdi` context object (Mdi.play, …)
