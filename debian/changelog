@@ -1,3 +1,16 @@
+neo-code (0.7.0) unstable; urgency=medium
+
+  * Chơi (Play) mode: a third mode where kids drive a 3-joint ThingBot arm
+    from Python — a free-exploration sandbox with no goal or grading. The
+    side panel is a tappable API reference; the right column shows live
+    joint telemetry above the result console. Works from both the editor
+    and the REPL, and falls back to a simulated arm with no board attached.
+  * Result console: the three near-identical output panels are now one
+    shared components/common/ResultConsole.qml.
+  * Depend on python3-serial (arm serial link).
+
+ -- ThingEdu <everwellmax@gmail.com>  Thu, 23 Jul 2026 14:20:00 +0700
+
 neo-code (0.6.1) unstable; urgency=medium
 
   * Console: prompts for and forwards typed answers to a running program's
